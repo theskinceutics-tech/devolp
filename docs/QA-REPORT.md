@@ -1,6 +1,6 @@
 # Elysium Clinical — build, QA and performance report
 
-Date: 12 October 2026 · Theme version 1.0.0
+Date: 12 October 2026 · Theme version 1.0.1
 
 ## 1. What could and could not be inspected
 
@@ -44,6 +44,13 @@ Not built, deliberately: a professional-locator map, a virtual consultation book
 - Motion: buttons 180ms; mega-menu 220ms; drawers 280ms; carousel smooth scroll; scroll reveal 500ms fade/translate; all switched off under `prefers-reduced-motion`. Opacity and transform only, so there is no layout animation.
 
 ## 4. Automated checks run
+
+### 4.0 Fixes in 1.0.1 (reported after the first upload)
+- **"Section does not exist" errors.** Shopify rejected `trust-bar`, `cta-band` and `ingredient-cards` at upload, because their `url` settings had defaults other than `/collections` or `/collections/all` (Shopify allows only those two). Every template that uses these sections then showed a missing-section error. The defaults have been removed.
+- A strict upload-rule validator (`url`/resource defaults, range steps, select options, richtext format, unknown template settings, block types, name lengths) now reports **0 problems** for all sections, templates and section groups.
+- **404s.** A new `safe-url` snippet checks that a linked page, policy, blog or collection exists before outputting the link. It is used by the buttons, CTA band, reassurance band, service cards, concern cards, ingredient cards, carousel intro link and announcement bar. Rich-text defaults no longer link to pages that may not exist.
+- `predictive-search` now has a schema.
+
 
 ### 4.1 Shopify Theme Check (`@shopify/theme-check-node`, recommended config)
 Final result: **0 errors, 0 warnings.** The first run found 11 errors and 8 warnings; all were fixed. They were filters inside `render` arguments, a missing image width/height, an unclosed-element branch, preload tags and a hard-coded route.

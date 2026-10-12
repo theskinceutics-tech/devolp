@@ -1,0 +1,37 @@
+{%- comment -%}
+  Outputs the URL only when its target exists in this store, otherwise nothing.
+  Prevents 404s from links to pages, policies, blogs or collections that have not been created yet.
+  Usage: {%- capture u -%}{% render 'safe-url', url: some_url %}{%- endcapture -%}
+{%- endcomment -%}
+{%- liquid
+  assign out = url
+  assign path = url | split: '?' | first | split: '#' | first
+  if path contains '/pages/'
+    assign h = path | split: '/pages/' | last
+    if pages[h].id == blank
+      assign out = ''
+    endif
+  elsif path contains '/policies/'
+    assign h = path | split: '/policies/' | last
+    assign found = false
+    for policy in shop.policies
+      if policy.url contains h
+        assign found = true
+      endif
+    endfor
+    unless found
+      assign out = ''
+    endunless
+  elsif path contains '/blogs/'
+    assign h = path | split: '/blogs/' | last | split: '/' | first
+    if blogs[h].id == blank
+      assign out = ''
+    endif
+  elsif path contains '/collections/'
+    assign h = path | split: '/collections/' | last | split: '/' | first
+    if h != 'all' and collections[h].id == blank
+      assign out = ''
+    endif
+  endif
+  echo out
+-%}

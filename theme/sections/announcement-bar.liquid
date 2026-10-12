@@ -6,7 +6,9 @@
 <div class="announcement" data-announcement="{{ key }}" id="Announcement-{{ section.id }}">
   <div class="container announcement__inner">
     <p>
-      {%- if section.settings.link != blank -%}<a href="{{ section.settings.link }}">{{ text | escape }}</a>{%- else -%}{{ text | escape }}{%- endif -%}
+      {%- capture ann_url -%}{%- render 'safe-url', url: section.settings.link -%}{%- endcapture -%}
+      {%- assign ann_url = ann_url | strip -%}
+      {%- if ann_url != blank -%}<a href="{{ ann_url }}">{{ text | escape }}</a>{%- else -%}{{ text | escape }}{%- endif -%}
     </p>
     {%- if section.settings.dismissible -%}
       <button type="button" class="announcement__close" data-announcement-close aria-label="Dismiss announcement">{% render 'icon', name: 'close', class: 'icon--sm' %}</button>

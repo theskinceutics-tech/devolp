@@ -24,16 +24,18 @@
     <div class="grid {{ cols }}" style="--grid-gap:28px 20px">
       {%- for block in section.blocks -%}
         {%- assign b = block.settings -%}
+        {%- capture card_url -%}{%- render 'safe-url', url: b.link -%}{%- endcapture -%}
+        {%- assign card_url = card_url | strip -%}
         <div class="service-card"{% if dark %} style="background:transparent;color:#fff"{% endif %} {{ block.shopify_attributes }}>
-          {%- if b.link != blank -%}<a href="{{ b.link }}" tabindex="-1" aria-hidden="true">{%- endif -%}
+          {%- if card_url != blank -%}<a href="{{ card_url }}" tabindex="-1" aria-hidden="true">{%- endif -%}
           {%- render 'media', image: b.image, product: b.product, ratio: '4/3', sizes: '(min-width: 990px) 33vw, 100vw', variant: forloop.index, tone: s.style -%}
-          {%- if b.link != blank -%}</a>{%- endif -%}
+          {%- if card_url != blank -%}</a>{%- endif -%}
           <div class="service-card__body">
             {%- if b.kicker != blank -%}<span class="eyebrow" style="margin:0">{{ b.kicker | escape }}</span>{%- endif -%}
             <h3>{{ b.title | escape }}</h3>
             {%- if b.text != blank -%}<p{% if dark %} style="color:rgba(255,255,255,.75)"{% endif %}>{{ b.text | escape }}</p>{%- endif -%}
             {%- if b.style == 'link' -%}
-              {%- if b.button_label != blank and b.link != blank -%}<a href="{{ b.link }}" class="link-arrow">{{ b.button_label | escape }} {% render 'icon', name: 'arrow' %}</a>{%- endif -%}
+              {%- if b.button_label != blank and card_url != blank -%}<a href="{{ card_url }}" class="link-arrow">{{ b.button_label | escape }} {% render 'icon', name: 'arrow' %}</a>{%- endif -%}
             {%- else -%}
               {%- render 'button', label: b.button_label, link: b.link, dark: dark, variant: b.style -%}
             {%- endif -%}

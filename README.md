@@ -18,6 +18,8 @@ Products, prices (PKR), images, collections, blogs, menus and policies are read 
 
 ## 2. Pages to create (Online Store → Pages)
 
+Buttons and links that point to a page, policy, blog or collection that does not exist yet are **hidden automatically**, so visitors never land on a 404. They appear as soon as you create the page with the handle below.
+
 | Page title | Handle | Template to select |
 |---|---|---|
 | About | `about` | `page.about` |

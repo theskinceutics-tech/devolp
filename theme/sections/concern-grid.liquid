@@ -10,6 +10,12 @@
       {%- for block in section.blocks -%}
         {%- liquid
           assign url = block.settings.link
+          if url contains '/pages/' or url contains '/collections/'
+            capture checked
+              render 'safe-url', url: url
+            endcapture
+            assign url = checked | strip
+          endif
           if block.settings.collection != blank
             assign url = block.settings.collection.url
           endif

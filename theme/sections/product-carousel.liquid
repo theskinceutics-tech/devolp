@@ -18,7 +18,9 @@
         {%- if s.heading != blank -%}<h2>{{ s.heading | escape }}</h2>{%- endif -%}
         {%- if s.subheading != blank -%}<p style="font-weight:600;color:inherit">{{ s.subheading | escape }}</p>{%- endif -%}
         {%- if s.text != blank -%}<p>{{ s.text | escape }}</p>{%- endif -%}
-        {%- if s.intro_link_label != blank and s.intro_link != blank -%}<a href="{{ s.intro_link }}" class="link-arrow">{{ s.intro_link_label | escape }} {% render 'icon', name: 'arrow' %}</a>{%- endif -%}
+        {%- capture intro_url -%}{%- render 'safe-url', url: s.intro_link -%}{%- endcapture -%}
+        {%- assign intro_url = intro_url | strip -%}
+        {%- if s.intro_link_label != blank and intro_url != blank -%}<a href="{{ intro_url }}" class="link-arrow">{{ s.intro_link_label | escape }} {% render 'icon', name: 'arrow' %}</a>{%- endif -%}
       </div>
     {%- endif -%}
     {%- if source.products_count > 0 -%}

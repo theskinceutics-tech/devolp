@@ -44,7 +44,7 @@
         "b8": {
           "type": "text",
           "settings": {
-            "text": "<p>Questions about this product? <a href=\"/pages/contact\">Ask our team</a>.</p>"
+            "text": "<p>Questions about this product? Our customer care team is happy to help.</p>"
           }
         },
         "b9": {
@@ -146,21 +146,21 @@
           "type": "question",
           "settings": {
             "question": "How long does delivery take?",
-            "answer": "<p>Delivery times and charges are shown at checkout and in our <a href=\"/policies/shipping-policy\">shipping policy</a>.</p>"
+            "answer": "<p>Delivery times and charges are shown at checkout. Our store policies are linked at the bottom of every page.</p>"
           }
         },
         "b2": {
           "type": "question",
           "settings": {
             "question": "Can I return a product?",
-            "answer": "<p>Please see our <a href=\"/policies/refund-policy\">refund policy</a> for eligibility and how to request a return.</p>"
+            "answer": "<p>Please see our refund policy, linked at the bottom of every page, for eligibility and how to request a return.</p>"
           }
         },
         "b3": {
           "type": "question",
           "settings": {
             "question": "Is this product right for me?",
-            "answer": "<p>Read the directions and full ingredient list above. If you have sensitive skin, patch-test first. For personal advice, <a href=\"/pages/contact\">contact our team</a>.</p>"
+            "answer": "<p>Read the directions and full ingredient list above. If you have sensitive skin, patch-test first. For personal advice, contact our team.</p>"
           }
         }
       },

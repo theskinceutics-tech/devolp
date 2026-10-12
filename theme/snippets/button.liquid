@@ -1,5 +1,7 @@
 {%- comment -%} Params: label, link, variant ('primary'|'outline'|'accent'), dark (bool), class {%- endcomment -%}
-{%- if label != blank and link != blank -%}
+{%- capture safe_link -%}{%- render 'safe-url', url: link -%}{%- endcapture -%}
+{%- assign safe_link = safe_link | strip -%}
+{%- if label != blank and safe_link != blank -%}
   {%- liquid
     assign cls = 'btn'
     if dark
@@ -17,5 +19,5 @@
       endcase
     endif
   -%}
-  <a href="{{ link }}" class="{{ cls }} {{ class }}">{{ label | escape }}</a>
+  <a href="{{ safe_link }}" class="{{ cls }} {{ class }}">{{ label | escape }}</a>
 {%- endif -%}

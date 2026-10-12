@@ -12,6 +12,12 @@
           {%- liquid
             assign b = block.settings
             assign url = b.link
+            if url contains '/pages/'
+              assign ph = url | split: '/pages/' | last | split: '?' | first
+              if pages[ph].id == blank
+                assign url = ''
+              endif
+            endif
             if url == blank
               assign q = b.name | url_param_escape
               assign url = routes.search_url | append: '?q=' | append: q
@@ -49,7 +55,7 @@
     { "type": "textarea", "id": "text", "label": "Text" },
     { "type": "select", "id": "align", "label": "Heading alignment", "default": "center", "options": [{ "value": "center", "label": "Center" }, { "value": "left", "label": "Left" }] },
     { "type": "text", "id": "button_label", "label": "Button label", "default": "Ingredient glossary" },
-    { "type": "url", "id": "button_link", "label": "Button link", "default": "/pages/ingredients" },
+    { "type": "url", "id": "button_link", "label": "Button link", "info": "For example your ingredient glossary page." },
     { "type": "select", "id": "style", "label": "Background", "default": "light", "options": [{ "value": "light", "label": "White" }, { "value": "surface", "label": "Light grey" }, { "value": "blue", "label": "Light blue" }] }
   ],
   "blocks": [

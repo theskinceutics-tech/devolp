@@ -2,18 +2,22 @@
   <div class="trust">
     <div class="trust__items">
       {%- for block in section.blocks -%}
-        {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}" class="trust__item" {{ block.shopify_attributes }}>{%- else -%}<div class="trust__item" {{ block.shopify_attributes }}>{%- endif -%}
+        {%- capture item_url -%}{%- render 'safe-url', url: block.settings.link -%}{%- endcapture -%}
+        {%- assign item_url = item_url | strip -%}
+        {%- if item_url != blank -%}<a href="{{ item_url }}" class="trust__item" {{ block.shopify_attributes }}>{%- else -%}<div class="trust__item" {{ block.shopify_attributes }}>{%- endif -%}
           {%- render 'icon', name: block.settings.icon -%}
           <span>{{ block.settings.title | escape }}</span>
           {%- if block.settings.text != blank -%}<small>{{ block.settings.text | escape }}</small>{%- endif -%}
-        {%- if block.settings.link != blank -%}</a>{%- else -%}</div>{%- endif -%}
+        {%- if item_url != blank -%}</a>{%- else -%}</div>{%- endif -%}
       {%- endfor -%}
     </div>
     {%- if section.settings.panel_heading != blank -%}
       <div class="trust__panel">
         <h3>{{ section.settings.panel_heading | escape }}</h3>
         <p>{{ section.settings.panel_text | escape }}</p>
-        {%- if section.settings.panel_link != blank -%}<a href="{{ section.settings.panel_link }}" class="link-arrow" style="color:#fff">{{ section.settings.panel_link_label | escape }} {% render 'icon', name: 'arrow' %}</a>{%- endif -%}
+        {%- capture panel_url -%}{%- render 'safe-url', url: section.settings.panel_link -%}{%- endcapture -%}
+        {%- assign panel_url = panel_url | strip -%}
+        {%- if panel_url != blank -%}<a href="{{ panel_url }}" class="link-arrow" style="color:#fff">{{ section.settings.panel_link_label | escape }} {% render 'icon', name: 'arrow' %}</a>{%- endif -%}
       </div>
     {%- endif -%}
   </div>
@@ -24,7 +28,7 @@
   "settings": [
     { "type": "text", "id": "panel_heading", "label": "Panel heading", "default": "Shop authentic Elysium" },
     { "type": "text", "id": "panel_text", "label": "Panel text", "default": "Buy directly from the official Elysium Skin Sciences store to make sure you receive genuine products." },
-    { "type": "url", "id": "panel_link", "label": "Panel link", "default": "/pages/about" },
+    { "type": "url", "id": "panel_link", "label": "Panel link" },
     { "type": "text", "id": "panel_link_label", "label": "Panel link label", "default": "About Elysium" }
   ],
   "blocks": [
