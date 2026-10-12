@@ -1,0 +1,37 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "per_page": 24,
+        "show_description": true,
+        "show_image": true,
+        "enable_filters": true,
+        "enable_sort": true
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "settings": {
+        "heading": "About this concern",
+        "layout": "stack",
+        "style": "light"
+      }
+    },
+    "advice": {
+      "type": "blog-cards",
+      "settings": {
+        "heading": "Related advice",
+        "button_label": "Explore articles",
+        "limit": 6,
+        "layout": "split",
+        "style": "surface"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "faq",
+    "advice"
+  ]
+}

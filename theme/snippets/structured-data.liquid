@@ -1,0 +1,36 @@
+{%- comment -%} JSON-LD. Disable a block here if an installed SEO app already outputs the same schema type. {%- endcomment -%}
+{%- if request.page_type == 'index' -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": {{ shop.name | json }},
+  "url": {{ request.origin | append: routes.root_url | json }}
+  {%- if settings.logo %},"logo": {{ settings.logo | image_url: width: 600 | prepend: 'https:' | json }}{% endif %}
+  {%- assign same = '' -%}
+  {%- assign networks = 'instagram,facebook,tiktok,youtube' | split: ',' -%}
+  {%- for s in networks -%}
+    {%- assign key = 'social_' | append: s -%}
+    {%- if settings[key] != blank -%}{%- assign same = same | append: settings[key] | append: '|' -%}{%- endif -%}
+  {%- endfor -%}
+  {%- if same != '' %},"sameAs": {{ same | split: '|' | json }}{% endif %}
+},
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": {{ shop.name | json }},
+  "url": {{ request.origin | append: routes.root_url | json }},
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {{ request.origin | append: routes.search_url | append: '?q={search_term_string}' | json }},
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+{%- endif -%}
+{%- if request.page_type == 'product' -%}
+<script type="application/ld+json">{{ product | structured_data }}</script>
+{%- endif -%}
+{%- if request.page_type == 'article' -%}
+<script type="application/ld+json">{{ article | structured_data }}</script>
+{%- endif -%}

@@ -1,0 +1,81 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-blog",
+      "settings": {
+        "eyebrow": "Expert advice",
+        "text": "Skincare education, ingredient guides and routine advice from Elysium Skin Sciences."
+      }
+    },
+    "ingredients": {
+      "type": "ingredient-cards",
+      "settings": {
+        "eyebrow": "Glossary",
+        "heading": "Explore ingredients",
+        "button_label": "Ingredient glossary",
+        "button_link": "/pages/ingredients",
+        "style": "surface",
+        "align": "center"
+      },
+      "blocks": {
+        "b1": {
+          "type": "ingredient",
+          "settings": {
+            "name": "PDRN",
+            "symbol": "PDRN",
+            "kicker": "Technology",
+            "text": "Polydeoxyribonucleotide — DNA fragments studied in skin science for their role in supporting the skin's natural recovery processes."
+          }
+        },
+        "b2": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Exosomes",
+            "symbol": "EXO",
+            "kicker": "Technology",
+            "text": "Tiny extracellular vesicles used in advanced cosmetic formulas focused on skin renewal and a revitalised look."
+          }
+        },
+        "b3": {
+          "type": "ingredient",
+          "settings": {
+            "name": "NAD+",
+            "symbol": "NAD+",
+            "kicker": "Active",
+            "text": "A coenzyme involved in cellular energy, explored in skincare for its role in keeping skin looking healthy and resilient."
+          }
+        },
+        "b4": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Mandelic acid",
+            "symbol": "AHA",
+            "kicker": "Exfoliant",
+            "text": "A larger-molecule alpha hydroxy acid from bitter almonds, known as a gentler exfoliant for smoother-looking skin."
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ]
+    },
+    "products": {
+      "type": "product-carousel",
+      "settings": {
+        "heading": "Shop best sellers",
+        "limit": 8,
+        "per_view": "4",
+        "view_all_label": "Shop all",
+        "style": "light"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "ingredients",
+    "products"
+  ]
+}

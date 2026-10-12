@@ -1,0 +1,28 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "trust": {
+      "type": "trust-bar",
+      "blocks": {
+        "t1": { "type": "item", "settings": { "icon": "shield", "title": "Authentic products", "text": "Direct from the brand", "link": "/pages/about" } },
+        "t2": { "type": "item", "settings": { "icon": "chat", "title": "Talk to us", "text": "Product and routine questions", "link": "/pages/contact" } },
+        "t3": { "type": "item", "settings": { "icon": "routine", "title": "Build your routine", "text": "Find products by concern", "link": "/pages/routine" } },
+        "t4": { "type": "item", "settings": { "icon": "lock", "title": "Secure checkout", "text": "Powered by Shopify", "link": "" } }
+      },
+      "block_order": ["t1", "t2", "t3", "t4"],
+      "settings": {}
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "m1": { "type": "menu", "settings": { "heading": "Shop", "menu": "main-menu" } },
+        "m2": { "type": "menu", "settings": { "heading": "Help", "menu": "footer" } },
+        "x1": { "type": "text", "settings": { "heading": "Customer care", "text": "<p>Questions about your order or routine? <a href=\"/pages/contact\">Contact our team</a>.</p>" } }
+      },
+      "block_order": ["m1", "m2", "x1"],
+      "settings": {}
+    }
+  },
+  "order": ["trust", "footer"]
+}

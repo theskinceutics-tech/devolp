@@ -1,0 +1,129 @@
+{
+  "sections": {
+    "hero": {
+      "type": "page-hero",
+      "settings": {
+        "breadcrumbs": true,
+        "eyebrow": "About us",
+        "heading": "Advanced skincare backed by science",
+        "text": "Our mission is to make targeted, science-led skin and hair care simple to use and easy to trust.",
+        "art": "1"
+      }
+    },
+    "promise": {
+      "type": "image-with-text",
+      "settings": {
+        "media_side": "right",
+        "ratio": "portrait",
+        "art": "3",
+        "style": "light",
+        "heading": "Our promise",
+        "text": "<p>We develop formulas around well-studied cosmetic actives and modern delivery technologies, with clear directions and complete ingredient lists on every product page.</p>"
+      }
+    },
+    "philosophy": {
+      "type": "image-with-text",
+      "settings": {
+        "media_side": "left",
+        "ratio": "square",
+        "art": "5",
+        "style": "light",
+        "heading": "Our formulation philosophy",
+        "text": "<p>Each product is designed for a specific concern — from uneven tone to hair thinning — so building a routine is straightforward.</p>",
+        "button_label": "Our science",
+        "button_link": "/pages/science"
+      }
+    },
+    "values": {
+      "type": "image-with-text",
+      "settings": {
+        "media_side": "right",
+        "ratio": "landscape",
+        "art": "4",
+        "style": "light",
+        "heading": "Our values",
+        "text": "<p>Honest information, responsible claims and real customer support. If you have a question about any Elysium product, our team is here to help.</p>",
+        "button_label": "Contact us",
+        "button_link": "/pages/contact"
+      }
+    },
+    "partners": {
+      "type": "image-with-text",
+      "settings": {
+        "style": "dark",
+        "bleed": true,
+        "media_side": "right",
+        "ratio": "landscape",
+        "art": "2",
+        "heading": "Made for everyday routines",
+        "text": "<p>Targeted serums, cleansers, sun protection and hair care that work together in a simple daily routine.</p>",
+        "button_label": "Shop all products",
+        "button_link": "/collections/all"
+      }
+    },
+    "contact": {
+      "type": "service-cards",
+      "settings": {
+        "heading": "Get in touch",
+        "text": "We're committed to helping you find the right products and use them well.",
+        "style": "light"
+      },
+      "blocks": {
+        "b1": {
+          "type": "card",
+          "settings": {
+            "title": "Send us a message",
+            "text": "Product, order and routine questions.",
+            "button_label": "Contact us",
+            "link": "/pages/contact",
+            "style": "link"
+          }
+        },
+        "b2": {
+          "type": "card",
+          "settings": {
+            "title": "Build your routine",
+            "text": "Step-by-step routines by concern.",
+            "button_label": "Start now",
+            "link": "/pages/routine",
+            "style": "link"
+          }
+        },
+        "b3": {
+          "type": "card",
+          "settings": {
+            "title": "Expert advice",
+            "text": "Read our skincare education articles.",
+            "button_label": "Read articles",
+            "link": "/blogs/news",
+            "style": "link"
+          }
+        },
+        "b4": {
+          "type": "card",
+          "settings": {
+            "title": "Ingredient glossary",
+            "text": "What's inside our formulas.",
+            "button_label": "Explore",
+            "link": "/pages/ingredients",
+            "style": "link"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ]
+    }
+  },
+  "order": [
+    "hero",
+    "promise",
+    "philosophy",
+    "values",
+    "partners",
+    "contact"
+  ]
+}

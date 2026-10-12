@@ -1,0 +1,75 @@
+{%- liquid
+  assign related = article.metafields.custom.related_products.value
+-%}
+{%- render 'breadcrumbs' -%}
+<article class="article" itemscope itemtype="https://schema.org/Article">
+  <header class="container container--narrow" style="padding-top:24px;text-align:center">
+    {%- if article.tags.size > 0 -%}<span class="eyebrow">{{ article.tags.first | escape }}</span>{%- endif -%}
+    <h1 itemprop="headline">{{ article.title | escape }}</h1>
+    <p class="muted" style="font-size:13px">
+      {%- if section.settings.show_author and article.author != blank -%}By <span itemprop="author">{{ article.author | escape }}</span> · {% endif -%}
+      <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}" itemprop="datePublished">{{ article.published_at | date: format: 'date' }}</time>
+      {%- assign words = article.content | strip_html | split: ' ' | size -%}
+      {%- assign mins = words | divided_by: 220 | at_least: 1 -%} · {{ mins }} min read
+    </p>
+  </header>
+  {%- if article.image -%}
+    <div class="container" style="margin-block:28px 8px">{%- render 'media', image: article.image, ratio: '21/9', sizes: '(min-width: 1320px) 1320px, 100vw', eager: true -%}</div>
+  {%- endif -%}
+  <div class="container container--narrow">
+    {%- if section.settings.show_toc -%}
+      <nav class="toc" data-toc hidden aria-label="In this article"><p class="eyebrow" style="color:var(--c-ink)">In this article</p><ol></ol></nav>
+    {%- endif -%}
+    <div class="rte article__body" itemprop="articleBody" data-article-body>{{ article.content }}</div>
+    {%- if article.tags.size > 0 -%}
+      <p style="margin-top:32px;display:flex;flex-wrap:wrap;gap:8px">{%- for tag in article.tags -%}<a class="facet-chip" style="display:inline-flex;align-items:center;min-height:32px;padding:0 12px;border:1px solid var(--c-line);border-radius:999px;font-size:12.5px;text-decoration:none" href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag | escape }}</a>{%- endfor -%}</p>
+    {%- endif -%}
+  </div>
+</article>
+{%- if related != blank -%}
+<section class="section section--surface" style="margin-top:var(--space-section)">
+  <div class="container">
+    <div class="section-head"><h2>Shop featured products</h2></div>
+    <div class="grid grid--products">{%- for p in related limit: 4 -%}{%- render 'product-card', product: p -%}{%- endfor -%}</div>
+  </div>
+</section>
+{%- endif -%}
+{%- if blog.articles_count > 1 -%}
+<section class="section">
+  <div class="container">
+    <div class="section-head"><h2>Related articles</h2></div>
+    <div class="grid grid--3" style="--grid-gap:40px 24px">
+      {%- assign shown = 0 -%}
+      {%- for a in blog.articles -%}
+        {%- if a.id == article.id or shown >= 3 -%}{%- continue -%}{%- endif -%}
+        {%- assign shown = shown | plus: 1 -%}
+        <a href="{{ a.url }}" class="article-card">
+          {%- render 'media', image: a.image, ratio: '4/3', sizes: '(min-width: 750px) 33vw, 100vw', variant: forloop.index -%}
+          <h3>{{ a.title | escape }}</h3>
+          <p>{{ a.excerpt_or_content | strip_html | truncatewords: 18 }}</p>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+<style>
+  .article__body{font-size:16.5px;line-height:1.75}
+  .article__body h2{margin-top:1.8em;scroll-margin-top:140px}
+  .article__body h3{margin-top:1.5em}
+  .toc{background:var(--c-surface);padding:20px 24px;margin:8px 0 32px}
+  .toc ol{margin:0;padding-left:1.2em;display:grid;gap:6px;font-size:14px}
+</style>
+<script>
+  (function(){var t=document.querySelector('[data-toc]');if(!t)return;var hs=document.querySelectorAll('[data-article-body] h2');if(hs.length<3)return;var ol=t.querySelector('ol');hs.forEach(function(h,i){if(!h.id)h.id='section-'+(i+1);var li=document.createElement('li');var a=document.createElement('a');a.href='#'+h.id;a.textContent=h.textContent;li.appendChild(a);ol.appendChild(li);});t.hidden=false;})();
+</script>
+{% schema %}
+{
+  "name": "Article",
+  "settings": [
+    { "type": "checkbox", "id": "show_author", "label": "Show author", "default": true },
+    { "type": "checkbox", "id": "show_toc", "label": "Table of contents (articles with 3+ H2 headings)", "default": true },
+    { "type": "paragraph", "content": "Featured products come from the article metafield custom.related_products (list of product references)." }
+  ]
+}
+{% endschema %}

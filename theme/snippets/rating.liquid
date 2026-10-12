@@ -1,0 +1,11 @@
+{%- comment -%} Uses the standard reviews.rating / reviews.rating_count metafields. Renders nothing when absent. {%- endcomment -%}
+{%- if product.metafields.reviews.rating.value != blank -%}
+  {%- liquid
+    assign r = product.metafields.reviews.rating.value
+    assign pct = r.rating | divided_by: r.scale_max | times: 100
+  -%}
+  <div class="rating" role="img" aria-label="{{ r.rating | round: 1 }} out of {{ r.scale_max }} stars">
+    <span class="rating__stars"><span style="width:{{ pct }}%"></span></span>
+    <span>{{ r.rating | round: 1 }}{% if product.metafields.reviews.rating_count %} ({{ product.metafields.reviews.rating_count }}){% endif %}</span>
+  </div>
+{%- endif -%}

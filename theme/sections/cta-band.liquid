@@ -1,0 +1,28 @@
+<section class="section--accent" style="background:var(--grad-blue);color:#fff">
+  <div class="container">
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0">
+      {%- for block in section.blocks -%}
+        <div class="cta-band__item" {{ block.shopify_attributes }}>
+          <p style="font-weight:600;margin:0 0 6px">{{ block.settings.title | escape }}</p>
+          {%- if block.settings.text != blank -%}<p style="font-size:13.5px;opacity:.85;margin:0 0 10px">{{ block.settings.text | escape }}</p>{%- endif -%}
+          {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}" class="link-arrow" style="color:#fff">{{ block.settings.link_label | escape }} {% render 'icon', name: 'arrow' %}</a>{%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+<style>#shopify-section-{{ section.id }} .cta-band__item{padding:28px 0}#shopify-section-{{ section.id }} .cta-band__item+.cta-band__item{border-top:1px solid rgba(255,255,255,.2)}@media (min-width:750px){#shopify-section-{{ section.id }} .cta-band__item{padding:32px 40px 32px 0}#shopify-section-{{ section.id }} .cta-band__item+.cta-band__item{border-top:0;border-left:1px solid rgba(255,255,255,.2);padding-left:40px}}</style>
+{% schema %}
+{
+  "name": "Call-to-action band",
+  "blocks": [
+    { "type": "cta", "name": "Call to action", "limit": 3, "settings": [
+      { "type": "text", "id": "title", "label": "Title", "default": "Need help choosing?" },
+      { "type": "text", "id": "text", "label": "Text" },
+      { "type": "text", "id": "link_label", "label": "Link label", "default": "Contact us" },
+      { "type": "url", "id": "link", "label": "Link", "default": "/pages/contact" }
+    ] }
+  ],
+  "presets": [{ "name": "Call-to-action band", "blocks": [{ "type": "cta" }, { "type": "cta" }] }]
+}
+{% endschema %}

@@ -1,0 +1,22 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-cart",
+      "settings": {}
+    },
+    "products": {
+      "type": "product-carousel",
+      "settings": {
+        "heading": "You may also like",
+        "limit": 8,
+        "per_view": "4",
+        "view_all_label": "",
+        "style": "surface"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "products"
+  ]
+}

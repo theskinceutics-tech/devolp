@@ -1,0 +1,61 @@
+{%- liquid
+  assign s = section.settings
+  assign list = product.metafields.custom.key_ingredients.value
+  assign full = product.metafields.custom.ingredients_full.value
+-%}
+{%- if list != blank or full != blank -%}
+<section class="section {% render 'section-class', style: s.style %} reveal" id="KeyIngredients">
+  <div class="container">
+    <div class="section-head section-head--left" style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:16px;max-width:none">
+      <h2 style="margin:0">{{ s.heading | escape }}</h2>
+      {%- if full != blank -%}
+        <button type="button" class="link-arrow" style="background:none;border:0;padding:0" data-drawer-open="IngredientsDrawer">See full ingredient list {% render 'icon', name: 'plus' %}</button>
+      {%- endif -%}
+    </div>
+    {%- if list != blank -%}
+      <div class="carousel" data-carousel style="--per-view:4;--slide-m:72%">
+        <div class="carousel__track" data-carousel-track tabindex="0" role="region" aria-label="{{ s.heading | escape }}">
+          {%- for row in list -%}
+            {%- liquid
+              assign parts = row | split: '|'
+              assign name = parts[0] | strip
+              assign desc = row | remove_first: parts[0] | remove_first: '|' | strip
+              assign handle = name | handle
+              assign pg = pages[handle]
+              assign q = name | url_param_escape
+            -%}
+            <a class="ingredient" href="{% if pg %}{{ pg.url }}{% else %}{{ routes.search_url }}?q={{ q }}{% endif %}">
+              <div class="media" style="--ratio:1/1">
+                {%- render 'art', variant: forloop.index -%}
+                <span style="position:absolute;left:18px;bottom:16px;font-family:var(--f-head);font-size:clamp(22px,2.4vw,32px);color:var(--c-accent-dark);max-width:85%;line-height:1.1">{{ name | escape }}</span>
+              </div>
+              <h3>{{ name | escape }}</h3>
+              {%- if desc != blank -%}<p>{{ desc | escape }}</p>{%- endif -%}
+            </a>
+          {%- endfor -%}
+        </div>
+        {%- render 'carousel-controls' -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+{%- if full != blank -%}
+<div id="IngredientsDrawer" class="drawer" aria-hidden="true">
+  <div class="drawer__overlay" data-drawer-close></div>
+  <div class="drawer__panel" role="dialog" aria-modal="true" aria-labelledby="IngredientsTitle">
+    <div class="drawer__head"><h2 id="IngredientsTitle">Full ingredients</h2><button type="button" class="drawer__close" data-drawer-close aria-label="Close">{% render 'icon', name: 'close' %}</button></div>
+    <div class="drawer__body rte" style="padding-top:20px;font-size:14px">{{ full | escape | newline_to_br }}</div>
+  </div>
+</div>
+{%- endif -%}
+{%- endif -%}
+{% schema %}
+{
+  "name": "Key ingredients",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Key ingredients" },
+    { "type": "select", "id": "style", "label": "Background", "default": "surface", "options": [{ "value": "light", "label": "White" }, { "value": "surface", "label": "Light grey" }, { "value": "blue", "label": "Light blue" }] },
+    { "type": "paragraph", "content": "Metafields: custom.key_ingredients (list of single-line text, format: Name | Short description) and custom.ingredients_full (multi-line). Cards link to a page with the same handle as the ingredient name when it exists." }
+  ]
+}
+{% endschema %}

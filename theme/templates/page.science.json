@@ -1,0 +1,194 @@
+{
+  "sections": {
+    "hero": {
+      "type": "page-hero",
+      "settings": {
+        "breadcrumbs": true,
+        "eyebrow": "Our science",
+        "heading": "The science behind Elysium",
+        "text": "Targeted actives, modern delivery systems and routines designed around specific skin and hair concerns.",
+        "art": "5"
+      }
+    },
+    "approach": {
+      "type": "image-with-text",
+      "settings": {
+        "media_side": "left",
+        "ratio": "square",
+        "art": "1",
+        "style": "light",
+        "heading": "Our approach",
+        "text": "<p>We start with a concern, choose actives with a clear role, and develop a texture and format that makes the product easy to use every day.</p>"
+      }
+    },
+    "tech": {
+      "type": "image-with-text",
+      "settings": {
+        "media_side": "right",
+        "ratio": "square",
+        "art": "3",
+        "style": "surface",
+        "eyebrow": "Technologies",
+        "heading": "Formulation technologies",
+        "text": "<p>Some of the technologies used across Elysium products:</p>"
+      },
+      "blocks": {
+        "b1": {
+          "type": "accordion",
+          "settings": {
+            "title": "Exosome technology",
+            "text": "<p>Extracellular vesicles used in advanced cosmetic formulas focused on skin renewal and a revitalised look.</p>"
+          }
+        },
+        "b2": {
+          "type": "accordion",
+          "settings": {
+            "title": "PDRN",
+            "text": "<p>Polydeoxyribonucleotide — DNA fragments studied for their role in supporting the skin's natural recovery processes.</p>"
+          }
+        },
+        "b3": {
+          "type": "accordion",
+          "settings": {
+            "title": "Encapsulation",
+            "text": "<p>Encapsulated actives are released gradually, helping strong ingredients feel more comfortable on the skin.</p>"
+          }
+        },
+        "b4": {
+          "type": "accordion",
+          "settings": {
+            "title": "Alpha hydroxy acids",
+            "text": "<p>Mandelic and glycolic acid exfoliate the skin's surface for a smoother, brighter-looking complexion.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ]
+    },
+    "ingredients": {
+      "type": "ingredient-cards",
+      "settings": {
+        "eyebrow": "Ingredients",
+        "heading": "Key ingredients",
+        "button_label": "Full glossary",
+        "button_link": "/pages/ingredients",
+        "style": "light",
+        "align": "center"
+      },
+      "blocks": {
+        "b1": {
+          "type": "ingredient",
+          "settings": {
+            "name": "PDRN",
+            "symbol": "PDRN",
+            "kicker": "Technology",
+            "text": "Polydeoxyribonucleotide — DNA fragments studied in skin science for their role in supporting the skin's natural recovery processes."
+          }
+        },
+        "b2": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Exosomes",
+            "symbol": "EXO",
+            "kicker": "Technology",
+            "text": "Tiny extracellular vesicles used in advanced cosmetic formulas focused on skin renewal and a revitalised look."
+          }
+        },
+        "b3": {
+          "type": "ingredient",
+          "settings": {
+            "name": "NAD+",
+            "symbol": "NAD+",
+            "kicker": "Active",
+            "text": "A coenzyme involved in cellular energy, explored in skincare for its role in keeping skin looking healthy and resilient."
+          }
+        },
+        "b4": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Mandelic acid",
+            "symbol": "AHA",
+            "kicker": "Exfoliant",
+            "text": "A larger-molecule alpha hydroxy acid from bitter almonds, known as a gentler exfoliant for smoother-looking skin."
+          }
+        },
+        "b5": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Glycolic acid",
+            "symbol": "AHA",
+            "kicker": "Exfoliant",
+            "text": "The smallest alpha hydroxy acid, used to exfoliate the surface for a brighter, more even-looking complexion."
+          }
+        },
+        "b6": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Vitamin C",
+            "symbol": "C",
+            "kicker": "Antioxidant",
+            "text": "An antioxidant widely used to help brighten the look of skin and support protection against environmental stressors."
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5",
+        "b6"
+      ]
+    },
+    "cta": {
+      "type": "cta-band",
+      "settings": {},
+      "blocks": {
+        "b1": {
+          "type": "cta",
+          "settings": {
+            "title": "Find your routine",
+            "text": "Products grouped by concern.",
+            "link_label": "Build your routine",
+            "link": "/pages/routine"
+          }
+        },
+        "b2": {
+          "type": "cta",
+          "settings": {
+            "title": "Shop the range",
+            "text": "Skin, hair and body care.",
+            "link_label": "Shop all",
+            "link": "/collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2"
+      ]
+    },
+    "advice": {
+      "type": "blog-cards",
+      "settings": {
+        "heading": "Skin science articles",
+        "button_label": "Explore articles",
+        "limit": 6,
+        "layout": "split",
+        "style": "light"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "approach",
+    "tech",
+    "ingredients",
+    "cta",
+    "advice"
+  ]
+}

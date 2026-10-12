@@ -1,0 +1,37 @@
+{%- liquid
+  assign s = section.settings
+  assign dark = false
+  if s.style == 'dark'
+    assign dark = true
+  endif
+  assign tag = 'h2'
+  if s.as_h1
+    assign tag = 'h1'
+  endif
+-%}
+<section class="section{% if s.compact %} section--tight{% endif %} {% render 'section-class', style: s.style %}">
+  <div class="container container--narrow" style="text-align:{{ s.align }}">
+    {%- if s.eyebrow != blank -%}<span class="eyebrow{% if s.pill %} eyebrow--pill{% endif %}">{{ s.eyebrow | escape }}</span>{%- endif -%}
+    {%- if s.heading != blank -%}<{{ tag }}>{{ s.heading | escape }}</{{ tag }}>{%- endif -%}
+    {%- if s.text != blank -%}<div class="rte{% unless dark %} muted{% endunless %}">{{ s.text }}</div>{%- endif -%}
+    {%- if s.button_label != blank -%}<div class="split__actions" style="justify-content:{% if s.align == 'center' %}center{% else %}flex-start{% endif %}">{%- render 'button', label: s.button_label, link: s.button_link, dark: dark, variant: 'outline' -%}</div>{%- endif -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Rich text",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "checkbox", "id": "pill", "label": "Eyebrow as dark label", "default": false },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Talk about your brand" },
+    { "type": "checkbox", "id": "as_h1", "label": "Use as page main heading (H1)", "default": false },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "text", "id": "button_label", "label": "Button label" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "select", "id": "align", "label": "Alignment", "default": "center", "options": [{ "value": "center", "label": "Center" }, { "value": "left", "label": "Left" }] },
+    { "type": "checkbox", "id": "compact", "label": "Reduce spacing", "default": false },
+    { "type": "select", "id": "style", "label": "Background", "default": "light", "options": [{ "value": "light", "label": "White" }, { "value": "surface", "label": "Light grey" }, { "value": "blue", "label": "Light blue" }, { "value": "dark", "label": "Dark" }] }
+  ],
+  "presets": [{ "name": "Rich text" }]
+}
+{% endschema %}

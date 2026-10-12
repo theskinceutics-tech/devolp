@@ -1,0 +1,92 @@
+{%- liquid
+  assign cols = section.blocks.size | at_least: 1 | at_most: 4
+-%}
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <div>
+        <a href="{{ routes.root_url }}" class="footer__logo">
+          {%- if settings.logo -%}
+            {{ settings.logo | image_url: width: 500 | image_tag: widths: '200,300,400,500', sizes: '200px', loading: 'lazy', alt: shop.name }}
+          {%- else -%}
+            <span class="header__logo-text">{{ shop.name }}</span>
+          {%- endif -%}
+        </a>
+        <div class="footer__cols" style="--cols:{{ cols }}">
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when 'menu' -%}
+                <div {{ block.shopify_attributes }}>
+                  <h2>{{ block.settings.heading | default: block.settings.menu.title | escape }}</h2>
+                  <ul>{%- for link in block.settings.menu.links -%}<li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>{%- endfor -%}</ul>
+                </div>
+              {%- when 'text' -%}
+                <div {{ block.shopify_attributes }}>
+                  <h2>{{ block.settings.heading | escape }}</h2>
+                  <div class="rte">{{ block.settings.text }}</div>
+                </div>
+            {%- endcase -%}
+          {%- endfor -%}
+        </div>
+      </div>
+      <div class="footer__news">
+        <h2>{{ section.settings.news_heading | escape }}</h2>
+        {%- if section.settings.news_text != blank -%}<p>{{ section.settings.news_text | escape }}</p>{%- endif -%}
+        {%- form 'customer', id: 'FooterNewsletter', class: 'footer__form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          {%- if form.posted_successfully? -%}
+            <p class="form-message" role="status">Thank you for subscribing.</p>
+          {%- elsif form.errors -%}
+            <p class="form-message form-message--error" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+          {%- endif -%}
+          <div class="field">
+            <label for="FooterEmail" class="visually-hidden">Email</label>
+            <input type="email" id="FooterEmail" name="contact[email]" class="input" placeholder="Email address" autocomplete="email" required>
+          </div>
+          <button type="submit" class="btn btn--ghost-light">Sign up</button>
+          {%- if section.settings.news_consent != blank -%}<p style="font-size:11.5px;margin-top:12px">{{ section.settings.news_consent | escape }}</p>{%- endif -%}
+        {%- endform -%}
+        <div class="footer__social">
+          {%- if settings.social_instagram != blank -%}<a href="{{ settings.social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram">{% render 'icon', name: 'instagram', class: 'icon--sm' %}</a>{%- endif -%}
+          {%- if settings.social_facebook != blank -%}<a href="{{ settings.social_facebook }}" target="_blank" rel="noopener" aria-label="Facebook">{% render 'icon', name: 'facebook', class: 'icon--sm' %}</a>{%- endif -%}
+          {%- if settings.social_tiktok != blank -%}<a href="{{ settings.social_tiktok }}" target="_blank" rel="noopener" aria-label="TikTok">{% render 'icon', name: 'tiktok', class: 'icon--sm' %}</a>{%- endif -%}
+          {%- if settings.social_youtube != blank -%}<a href="{{ settings.social_youtube }}" target="_blank" rel="noopener" aria-label="YouTube">{% render 'icon', name: 'youtube', class: 'icon--sm' %}</a>{%- endif -%}
+          {%- if settings.social_whatsapp != blank -%}<a href="{{ settings.social_whatsapp }}" target="_blank" rel="noopener" aria-label="WhatsApp">{% render 'icon', name: 'whatsapp', class: 'icon--sm' %}</a>{%- endif -%}
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</p>
+      <ul class="footer__policies">
+        {%- for policy in shop.policies -%}<li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>{%- endfor -%}
+      </ul>
+      {%- if section.settings.show_payments -%}
+        <ul class="footer__payments" aria-label="Payment methods">
+          {%- for type in shop.enabled_payment_types -%}<li>{{ type | payment_type_svg_tag }}</li>{%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+{% schema %}
+{
+  "name": "Footer",
+  "class": "section-footer",
+  "settings": [
+    { "type": "text", "id": "news_heading", "label": "Newsletter heading", "default": "Sign up" },
+    { "type": "text", "id": "news_text", "label": "Newsletter text", "default": "Receive skincare education, new launches and store news from Elysium Skin Sciences." },
+    { "type": "text", "id": "news_consent", "label": "Consent note", "default": "By subscribing you agree to receive marketing emails. You can unsubscribe at any time." },
+    { "type": "checkbox", "id": "show_payments", "label": "Show payment icons", "default": true }
+  ],
+  "blocks": [
+    { "type": "menu", "name": "Menu column", "limit": 4, "settings": [
+      { "type": "text", "id": "heading", "label": "Heading" },
+      { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
+    ] },
+    { "type": "text", "name": "Text column", "limit": 2, "settings": [
+      { "type": "text", "id": "heading", "label": "Heading", "default": "Customer care" },
+      { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Questions about your order or routine? Contact our team.</p>" }
+    ] }
+  ]
+}
+{% endschema %}

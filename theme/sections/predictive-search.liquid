@@ -1,0 +1,35 @@
+{%- if predictive_search.performed -%}
+  {%- liquid
+    assign res = predictive_search.resources
+    assign total = res.products.size | plus: res.collections.size | plus: res.articles.size | plus: res.pages.size
+  -%}
+  {%- if total > 0 -%}
+    {%- if res.products.size > 0 -%}
+      <div class="predictive__group">
+        <h4>Products</h4>
+        {%- for p in res.products -%}
+          <a href="{{ p.url }}" class="predictive__item">
+            {%- render 'media', product: p, ratio: '1/1', sizes: '52px' -%}
+            <span><span class="predictive__title">{{ p.title | escape }}</span><br><span class="predictive__price">{{ p.price | money }}</span></span>
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+    {%- if res.collections.size > 0 or res.pages.size > 0 -%}
+      <div class="predictive__group">
+        <h4>Collections &amp; pages</h4>
+        {%- for c in res.collections -%}<a href="{{ c.url }}" class="predictive__item"><span class="predictive__title">{{ c.title | escape }}</span></a>{%- endfor -%}
+        {%- for pg in res.pages -%}<a href="{{ pg.url }}" class="predictive__item"><span class="predictive__title">{{ pg.title | escape }}</span></a>{%- endfor -%}
+      </div>
+    {%- endif -%}
+    {%- if res.articles.size > 0 -%}
+      <div class="predictive__group">
+        <h4>Expert advice</h4>
+        {%- for a in res.articles -%}<a href="{{ a.url }}" class="predictive__item"><span class="predictive__title">{{ a.title | escape }}</span></a>{%- endfor -%}
+      </div>
+    {%- endif -%}
+    <a class="predictive__all" href="{{ routes.search_url }}?q={{ predictive_search.terms | url_encode }}">See all results for “{{ predictive_search.terms | escape }}”</a>
+  {%- else -%}
+    <p class="predictive__group">No results for “{{ predictive_search.terms | escape }}”.</p>
+  {%- endif -%}
+{%- endif -%}

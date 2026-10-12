@@ -1,0 +1,39 @@
+{%- liquid
+  assign s = section.settings
+  assign heading = s.heading
+  if heading == blank and page
+    assign heading = page.title
+  endif
+-%}
+{%- if s.breadcrumbs -%}{%- render 'breadcrumbs' -%}{%- endif -%}
+<section class="page-hero">
+  <div class="container page-hero__inner">
+    <div>
+      {%- if s.eyebrow != blank -%}<span class="eyebrow">{{ s.eyebrow | escape }}</span>{%- endif -%}
+      <h1>{{ heading | escape }}</h1>
+      {%- if s.text != blank -%}<p>{{ s.text | escape }}</p>{%- endif -%}
+    </div>
+    <div class="page-hero__media">
+      {%- if s.image != blank or s.product != blank -%}
+        {%- render 'media', image: s.image, product: s.product, ratio: '16/9', sizes: '(min-width: 900px) 45vw, 100vw', eager: true -%}
+      {%- else -%}
+        <div class="media" style="--ratio:16/9">{%- render 'art', variant: s.art -%}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Page hero",
+  "settings": [
+    { "type": "checkbox", "id": "breadcrumbs", "label": "Show breadcrumbs", "default": true },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "info": "Defaults to the page title." },
+    { "type": "textarea", "id": "text", "label": "Text" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "product", "id": "product", "label": "Product image fallback" },
+    { "type": "select", "id": "art", "label": "Artwork style (fallback)", "default": "1", "options": [{ "value": "1", "label": "Molecule" }, { "value": "2", "label": "Rings" }, { "value": "3", "label": "Helix" }, { "value": "4", "label": "Dots" }, { "value": "5", "label": "Hexagon" }] }
+  ],
+  "presets": [{ "name": "Page hero" }]
+}
+{% endschema %}

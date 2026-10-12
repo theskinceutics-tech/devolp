@@ -1,0 +1,31 @@
+.collection-hero{background:var(--c-surface)}
+.collection-hero__inner{display:grid;gap:24px;align-items:center;padding-block:36px}
+.collection-hero h1{margin:0 0 10px}
+.collection-hero__desc{color:var(--c-ink-soft);max-width:680px}
+@media (min-width:990px){.collection-hero--image .collection-hero__inner{grid-template-columns:1.2fr 1fr;padding-block:48px}}
+.collection{padding-block:28px var(--space-section)}
+.collection__bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--c-line)}
+.collection__count{margin:0;font-size:13px;color:var(--c-ink-soft);flex:1}
+.collection__sort{display:flex;align-items:center;gap:10px;font-size:13px}
+.collection__sort label{white-space:nowrap;font-weight:600}
+.collection__sort .select{min-height:40px;width:auto;min-width:180px;padding-block:8px}
+.collection__layout{display:grid;gap:32px}
+@media (min-width:990px){
+  .collection__layout.has-filters{grid-template-columns:260px minmax(0,1fr)}
+  .collection__filter-btn{display:none}
+  .facets.drawer{position:static;visibility:visible;z-index:auto}
+  .facets .drawer__overlay,.facets .drawer__head{display:none}
+  .facets .drawer__panel{position:static;transform:none;width:auto;background:transparent;transition:none}
+  .facets .drawer__body{padding:0;overflow:visible}
+  .facets__actions .btn{display:none}
+}
+.facets__group summary{font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.facets__values{display:grid;gap:10px;padding-bottom:18px;max-height:320px;overflow:auto}
+.facets__opt{font-size:14px;align-items:center}
+.facets__price{display:flex;align-items:center;gap:8px}
+.facets__price .input{min-height:42px}
+.facets__actions{display:grid;gap:12px;padding-top:20px}
+.facet-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.facet-chip{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 12px;border:1px solid var(--c-line);font-size:12.5px;text-decoration:none;border-radius:999px}
+.facet-chip:hover{border-color:var(--c-ink)}
+.facet-chip--clear{border:0;text-decoration:underline}

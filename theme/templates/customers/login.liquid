@@ -1,0 +1,32 @@
+<section class="section"><div class="container" style="max-width:480px">
+  <h1 class="text-center">Sign in</h1>
+  <div data-recover hidden>
+    <h2 class="h3">Reset your password</h2>
+    <p class="muted">We will send you an email to reset your password.</p>
+    {%- form 'recover_customer_password' -%}
+      {%- if form.posted_successfully? -%}<p class="form-message" role="status">We've sent you an email with a link to update your password.</p>{%- endif -%}
+      {{ form.errors | default_errors }}
+      <div class="field"><label for="RecoverEmail">Email</label><input class="input" type="email" id="RecoverEmail" name="email" autocomplete="email" required></div>
+      <button class="btn btn--block" type="submit">Send reset link</button>
+      <p class="text-center" style="margin-top:16px"><a href="#login" data-toggle-recover>Cancel</a></p>
+    {%- endform -%}
+  </div>
+  <div data-login>
+    {%- form 'customer_login', novalidate: 'novalidate' -%}
+      {%- if form.errors -%}<div class="form-message form-message--error" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+      <div class="field"><label for="LoginEmail">Email</label><input class="input" type="email" id="LoginEmail" name="customer[email]" autocomplete="email" required></div>
+      <div class="field"><label for="LoginPassword">Password</label><input class="input" type="password" id="LoginPassword" name="customer[password]" autocomplete="current-password" required></div>
+      <p><a href="#recover" data-toggle-recover>Forgot your password?</a></p>
+      <button class="btn btn--block" type="submit">Sign in</button>
+    {%- endform -%}
+    <p class="text-center" style="margin-top:20px">New here? <a href="{{ routes.account_register_url }}">Create an account</a></p>
+    {%- if shop.checkout.guest_login -%}
+      {%- form 'guest_login' -%}<button class="btn btn--outline btn--block" type="submit">Continue as guest</button>{%- endform -%}
+    {%- endif -%}
+  </div>
+</div></section>
+<script>
+  (function(){function t(show){document.querySelector('[data-recover]').hidden=!show;document.querySelector('[data-login]').hidden=show;}
+  document.querySelectorAll('[data-toggle-recover]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();t(a.getAttribute('href')==='#recover');});});
+  if(location.hash==='#recover')t(true);})();
+</script>

@@ -1,0 +1,55 @@
+{%- liquid
+  assign s = section.settings
+  assign list = s.collections
+  assign use_fallback = false
+  if list == blank or list.size == 0
+    assign use_fallback = true
+  endif
+-%}
+<section class="section {% render 'section-class', style: s.style %} reveal">
+  <div class="container">
+    <div class="section-head">
+      {%- if s.eyebrow != blank -%}<span class="eyebrow">{{ s.eyebrow | escape }}</span>{%- endif -%}
+      <h2>{{ s.heading | escape }}</h2>
+      {%- if s.text != blank -%}<p>{{ s.text | escape }}</p>{%- endif -%}
+    </div>
+    <div class="carousel" data-carousel style="--per-view:{{ s.per_view }};--slide-m:46%">
+      <div class="carousel__track" data-carousel-track tabindex="0" role="region" aria-label="{{ s.heading | escape }}">
+        {%- if use_fallback -%}
+          {%- assign shown = 0 -%}
+          {%- for c in collections -%}
+            {%- if c.handle == 'frontpage' or c.handle == 'all' or c.products_count == 0 -%}{%- continue -%}{%- endif -%}
+            {%- if shown >= 8 -%}{%- break -%}{%- endif -%}
+            {%- assign shown = shown | plus: 1 -%}
+            <a href="{{ c.url }}" class="tile">
+              {%- render 'media', collection: c, ratio: '4/5', sizes: '(min-width: 1100px) 25vw, 46vw', variant: forloop.index -%}
+              <span class="tile__label">{{ c.title | escape }} {% render 'icon', name: 'arrow' %}</span>
+            </a>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for c in list -%}
+            <a href="{{ c.url }}" class="tile">
+              {%- render 'media', collection: c, ratio: '4/5', sizes: '(min-width: 1100px) 25vw, 46vw', variant: forloop.index -%}
+              <span class="tile__label">{{ c.title | escape }} {% render 'icon', name: 'arrow' %}</span>
+            </a>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+      {%- render 'carousel-controls' -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Shop by category",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop by category" },
+    { "type": "textarea", "id": "text", "label": "Text" },
+    { "type": "collection_list", "id": "collections", "label": "Collections", "limit": 8, "info": "Uses your store's collections automatically when empty. Collection images are used first, then the first product image." },
+    { "type": "select", "id": "per_view", "label": "Tiles per view (desktop)", "default": "4", "options": [{ "value": "3", "label": "3" }, { "value": "4", "label": "4" }] },
+    { "type": "select", "id": "style", "label": "Background", "default": "light", "options": [{ "value": "light", "label": "White" }, { "value": "surface", "label": "Light grey" }, { "value": "blue", "label": "Light blue" }] }
+  ],
+  "presets": [{ "name": "Shop by category" }]
+}
+{% endschema %}

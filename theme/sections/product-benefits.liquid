@@ -1,0 +1,32 @@
+{%- liquid
+  assign list = product.metafields.custom.benefits.value
+  assign s = section.settings
+  assign icons = 'sparkle,drop,target,layers,sun,leaf,shield,molecule' | split: ','
+-%}
+{%- if list != blank -%}
+<section class="section {% render 'section-class', style: s.style %} reveal" id="ProductBenefits">
+  <div class="container">
+    <div class="section-head"><h2>{{ s.heading | replace: '[product]', product.title | escape }}</h2></div>
+    <ul class="benefits">
+      {%- for item in list -%}
+        <li>
+          <span class="benefits__icon">{%- assign ic = forloop.index0 | modulo: 8 -%}{% render 'icon', name: icons[ic], class: 'icon--lg' %}</span>
+          <span>{{ item | escape }}</span>
+        </li>
+      {%- endfor -%}
+    </ul>
+    {%- if s.footnote != blank -%}<p class="text-center" style="font-size:12px;opacity:.7;margin-top:28px">{{ s.footnote | escape }}</p>{%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Product benefits",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "[product] benefits", "info": "[product] is replaced with the product title." },
+    { "type": "text", "id": "footnote", "label": "Footnote", "info": "For claim qualifiers, e.g. study basis." },
+    { "type": "select", "id": "style", "label": "Background", "default": "dark", "options": [{ "value": "light", "label": "White" }, { "value": "surface", "label": "Light grey" }, { "value": "dark", "label": "Dark" }] },
+    { "type": "paragraph", "content": "Shows the product metafield custom.benefits (list of single-line text). Hidden when empty, so no generic claims are shown." }
+  ]
+}
+{% endschema %}

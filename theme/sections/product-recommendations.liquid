@@ -1,0 +1,26 @@
+<div data-recommendations data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=8&intent=related">
+  {%- if recommendations.performed and recommendations.products_count > 0 -%}
+    <div data-remote-content>
+      <section class="section {% render 'section-class', style: section.settings.style %}">
+        <div class="container">
+          <div class="section-head"><h2>{{ section.settings.heading | escape }}</h2></div>
+          <div class="carousel" data-carousel style="--per-view:4">
+            <div class="carousel__track" data-carousel-track tabindex="0" role="region" aria-label="{{ section.settings.heading | escape }}">
+              {%- for p in recommendations.products -%}<div>{%- render 'product-card', product: p -%}</div>{%- endfor -%}
+            </div>
+            {%- render 'carousel-controls' -%}
+          </div>
+        </div>
+      </section>
+    </div>
+  {%- endif -%}
+</div>
+{% schema %}
+{
+  "name": "Related products",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "You may also like" },
+    { "type": "select", "id": "style", "label": "Background", "default": "surface", "options": [{ "value": "light", "label": "White" }, { "value": "surface", "label": "Light grey" }] }
+  ]
+}
+{% endschema %}

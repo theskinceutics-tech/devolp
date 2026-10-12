@@ -1,0 +1,14 @@
+<section class="container empty-state">
+  <p class="eyebrow">404</p>
+  <h1>Page not found</h1>
+  <p>The page you were looking for doesn't exist or has moved.</p>
+  <form action="{{ routes.search_url }}" method="get" role="search" style="display:flex;gap:8px;max-width:460px;margin:0 auto 24px">
+    <label for="NotFoundSearch" class="visually-hidden">Search</label>
+    <input type="search" id="NotFoundSearch" name="q" class="input" placeholder="Search the store">
+    <button class="btn" type="submit">Search</button>
+  </form>
+  <a href="{{ routes.all_products_collection_url }}" class="btn btn--outline">Shop all products</a>
+</section>
+{% schema %}
+{ "name": "404", "settings": [] }
+{% endschema %}

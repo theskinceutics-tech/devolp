@@ -1,0 +1,9 @@
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "announcement": { "type": "announcement-bar", "settings": { "text": "Official Elysium Skin Sciences store — shop authentic products direct from the brand", "link": "", "dismissible": false } },
+    "header": { "type": "header", "settings": { "menu": "main-menu", "highlight_items": "", "tagline": "", "sticky": true, "show_search": true } }
+  },
+  "order": ["announcement", "header"]
+}

@@ -1,0 +1,47 @@
+{%- comment -%}
+  Original decorative "molecular" artwork used when no photograph has been uploaded,
+  so sections never appear empty. Param: variant (1-6), tone ('light'|'dark').
+{%- endcomment -%}
+{%- liquid
+  assign v = variant | default: 1 | modulo: 6
+  assign uid = 'g' | append: v | append: tone
+  if tone == 'dark'
+    assign c1 = settings.color_accent_dark
+    assign c2 = settings.color_dark
+    assign dot = '#ffffff'
+  else
+    assign c1 = settings.color_surface
+    assign c2 = settings.color_surface_2
+    assign dot = settings.color_accent
+  endif
+-%}
+<svg class="art" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="{{ uid }}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="{{ c1 }}"/><stop offset="1" stop-color="{{ c2 }}"/></linearGradient>
+    <radialGradient id="{{ uid }}r" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#{{ uid }})"/>
+  {%- case v -%}
+    {%- when 1 -%}
+      <circle cx="560" cy="300" r="260" fill="url(#{{ uid }}r)" opacity=".55"/>
+      <g fill="none" stroke="{{ dot }}" stroke-opacity=".35" stroke-width="2"><path d="M300 520 380 440 480 470 540 380 640 410"/><path d="M380 440 360 330 450 280"/><path d="M480 470 500 580"/></g>
+      <g fill="{{ dot }}"><circle cx="300" cy="520" r="14" opacity=".5"/><circle cx="380" cy="440" r="20" opacity=".7"/><circle cx="480" cy="470" r="12" opacity=".5"/><circle cx="540" cy="380" r="24" opacity=".8"/><circle cx="640" cy="410" r="10" opacity=".4"/><circle cx="360" cy="330" r="9" opacity=".4"/><circle cx="450" cy="280" r="16" opacity=".6"/><circle cx="500" cy="580" r="8" opacity=".4"/></g>
+    {%- when 2 -%}
+      <g fill="none" stroke="{{ dot }}" stroke-opacity=".25" stroke-width="1.5">{%- for i in (1..9) -%}<circle cx="400" cy="400" r="{{ i | times: 42 }}"/>{%- endfor -%}</g>
+      <circle cx="400" cy="400" r="90" fill="{{ dot }}" opacity=".12"/>
+    {%- when 3 -%}
+      <g fill="none" stroke="{{ dot }}" stroke-opacity=".35" stroke-width="2">
+        <path d="M250 100c180 120 120 220 300 300s120 220-50 300"/><path d="M550 100c-180 120-120 220-300 300s-120 220 50 300"/>
+      </g>
+      <g stroke="{{ dot }}" stroke-opacity=".25" stroke-width="2">{%- for i in (1..9) -%}{%- assign y = i | times: 70 | plus: 60 -%}<line x1="290" x2="510" y1="{{ y }}" y2="{{ y }}"/>{%- endfor -%}</g>
+    {%- when 4 -%}
+      <g fill="{{ dot }}">{%- for i in (0..7) -%}{%- for j in (0..7) -%}<circle cx="{{ i | times: 100 | plus: 50 }}" cy="{{ j | times: 100 | plus: 50 }}" r="{{ i | plus: j | modulo: 4 | plus: 2 }}" opacity=".35"/>{%- endfor -%}{%- endfor -%}</g>
+      <circle cx="260" cy="560" r="200" fill="url(#{{ uid }}r)" opacity=".6"/>
+    {%- when 5 -%}
+      <g fill="none" stroke="{{ dot }}" stroke-opacity=".3" stroke-width="2"><polygon points="400,180 590,290 590,510 400,620 210,510 210,290"/><polygon points="400,260 520,330 520,470 400,540 280,470 280,330"/><line x1="400" y1="180" x2="400" y2="260"/><line x1="590" y1="510" x2="520" y2="470"/><line x1="210" y1="510" x2="280" y2="470"/></g>
+      <g fill="{{ dot }}" opacity=".6"><circle cx="400" cy="180" r="10"/><circle cx="590" cy="290" r="10"/><circle cx="590" cy="510" r="10"/><circle cx="400" cy="620" r="10"/><circle cx="210" cy="510" r="10"/><circle cx="210" cy="290" r="10"/></g>
+    {%- else -%}
+      <circle cx="240" cy="260" r="220" fill="url(#{{ uid }}r)" opacity=".5"/>
+      <g fill="{{ dot }}">{%- for i in (1..14) -%}{%- assign x = i | times: 53 | modulo: 700 | plus: 50 -%}{%- assign y = i | times: 97 | modulo: 700 | plus: 50 -%}<circle cx="{{ x }}" cy="{{ y }}" r="{{ i | modulo: 5 | times: 6 | plus: 8 }}" opacity="{{ i | modulo: 3 | times: 0.15 | plus: 0.2 }}"/>{%- endfor -%}</g>
+  {%- endcase -%}
+</svg>

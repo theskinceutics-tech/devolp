@@ -1,0 +1,18 @@
+{%- render 'breadcrumbs' -%}
+<section class="section" style="padding-top:16px">
+  <div class="container">
+    <h1>{{ section.settings.heading | escape }}</h1>
+    <div class="grid grid--4" style="--grid-gap:32px 20px;margin-top:24px">
+      {%- for c in collections -%}
+        {%- if c.handle == 'frontpage' or c.products_count == 0 -%}{%- continue -%}{%- endif -%}
+        <a href="{{ c.url }}" class="tile">
+          {%- render 'media', collection: c, ratio: '4/5', sizes: '(min-width: 990px) 25vw, 50vw', variant: forloop.index -%}
+          <span class="tile__label">{{ c.title | escape }} {% render 'icon', name: 'arrow' %}</span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{ "name": "Collections list", "settings": [{ "type": "text", "id": "heading", "label": "Heading", "default": "Shop all categories" }] }
+{% endschema %}

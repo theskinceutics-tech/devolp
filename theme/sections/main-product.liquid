@@ -1,0 +1,187 @@
+{%- liquid
+  assign current = product.selected_or_first_available_variant
+  assign media_count = product.media.size
+  assign subtitle = product.metafields.custom.subtitle.value
+  assign size = product.metafields.custom.size.value
+-%}
+{{ 'product.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product.js' | asset_url }}" defer></script>
+{%- render 'breadcrumbs' -%}
+<section class="pdp" data-product-section="{{ section.id }}" data-url="{{ product.url }}">
+  <div class="container pdp__grid">
+    <div class="pdp__gallery" data-gallery>
+      <div class="pdp__stage">
+        <div class="pdp__track" data-gallery-track tabindex="0" aria-label="Product images">
+          {%- if media_count == 0 -%}
+            <div class="pdp__slide"><div class="media">{%- render 'art', variant: 2 -%}</div></div>
+          {%- endif -%}
+          {%- for media in product.media -%}
+            <div class="pdp__slide" data-media-id="{{ media.id }}" id="Slide-{{ section.id }}-{{ media.id }}">
+              {%- case media.media_type -%}
+                {%- when 'image' -%}
+                  {%- assign media_alt = media.alt | default: product.title -%}
+                  <button type="button" class="media media--contain pdp__zoom" data-zoom="{{ media.preview_image | image_url: width: 2400 }}" aria-label="Zoom image {{ forloop.index }} of {{ media_count }}">
+                    {%- if forloop.first -%}
+                      {%- render 'image', image: media.preview_image, sizes: '(min-width: 990px) 55vw, 100vw', eager: true, widths: '400,600,800,1000,1300,1600', alt: media_alt -%}
+                    {%- else -%}
+                      {%- render 'image', image: media.preview_image, sizes: '(min-width: 990px) 55vw, 100vw', widths: '400,600,800,1000,1300,1600', alt: media_alt -%}
+                    {%- endif -%}
+                  </button>
+                {%- when 'video' -%}
+                  <div class="media" style="--ratio:1/1">{{ media | video_tag: controls: true, preload: 'none', image_size: '1000x' }}</div>
+                {%- when 'external_video' -%}
+                  <div class="media" style="--ratio:16/9">{{ media | external_video_tag: loading: 'lazy' }}</div>
+                {%- else -%}
+                  <div class="media">{{ media | media_tag }}</div>
+              {%- endcase -%}
+            </div>
+          {%- endfor -%}
+        </div>
+        {%- if media_count > 1 -%}
+          <div class="pdp__dots" aria-hidden="true">{%- for m in product.media -%}<span{% if forloop.first %} class="is-active"{% endif %}></span>{%- endfor -%}</div>
+        {%- endif -%}
+      </div>
+      {%- if media_count > 1 -%}
+        <div class="pdp__thumbs" role="list">
+          {%- for media in product.media -%}
+            <button type="button" class="pdp__thumb{% if forloop.first %} is-active{% endif %}" data-thumb="{{ media.id }}" aria-label="Show image {{ forloop.index }}" role="listitem">
+              {{ media.preview_image | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80,160', sizes: '80px', alt: '' }}
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="pdp__info">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when '@app' -%}
+            {% render block %}
+          {%- when 'title' -%}
+            <div {{ block.shopify_attributes }}>
+              {%- assign badge = '' -%}
+              {%- for tag in product.tags -%}{%- if tag contains 'badge:' -%}{%- assign badge = tag | remove_first: 'badge:' | strip -%}{%- break -%}{%- endif -%}{%- endfor -%}
+              {%- if badge != '' -%}<span class="badge" style="padding-left:0">{{ badge | escape }}</span>{%- endif -%}
+              <h1 class="pdp__title">{{ product.title | escape }}</h1>
+              {%- if subtitle != blank -%}<p class="pdp__subtitle">{{ subtitle | escape }}</p>{%- endif -%}
+              {%- render 'rating', product: product -%}
+            </div>
+          {%- when 'summary' -%}
+            {%- assign summary = product.metafields.custom.short_description.value -%}
+            {%- if summary == blank -%}{%- assign summary = product.description | strip_html | truncatewords: 30 -%}{%- endif -%}
+            {%- if summary != blank -%}<p class="pdp__summary" {{ block.shopify_attributes }}>{{ summary | escape }} <a href="#ProductDetails">Read more</a></p>{%- endif -%}
+          {%- when 'price' -%}
+            <div class="pdp__price" data-pdp-price {{ block.shopify_attributes }}>
+              {%- render 'price', product: product, variant: current -%}
+              {%- if size != blank and product.has_only_default_variant -%}<span class="pdp__size">{{ size | escape }}</span>{%- endif -%}
+              {%- form 'product', product, id: 'ProductInstallments' -%}{{ form | payment_terms }}{%- endform -%}
+            </div>
+          {%- when 'variant_picker' -%}
+            {%- unless product.has_only_default_variant -%}
+              <div class="pdp__variants" data-variant-picker {{ block.shopify_attributes }}>
+                {%- for option in product.options_with_values -%}
+                  <fieldset class="opt">
+                    <legend>{{ option.name | escape }}: <span data-option-value>{{ option.selected_value | escape }}</span></legend>
+                    <div class="opt__values">
+                      {%- for value in option.values -%}
+                        {%- assign oid = section.id | append: '-' | append: forloop.parentloop.index | append: '-' | append: forloop.index -%}
+                        <input type="radio" class="visually-hidden" id="Opt-{{ oid }}" name="{{ option.name | escape }}" value="{{ value | escape }}" data-option-index="{{ forloop.parentloop.index0 }}"{% if option.selected_value == value %} checked{% endif %}>
+                        <label for="Opt-{{ oid }}" class="opt__pill">{{ value | escape }}</label>
+                      {%- endfor -%}
+                    </div>
+                  </fieldset>
+                {%- endfor -%}
+                <script type="application/json" data-variants>{{ product.variants | json }}</script>
+              </div>
+            {%- endunless -%}
+          {%- when 'buy_buttons' -%}
+            <div class="pdp__buy" {{ block.shopify_attributes }}>
+              {%- assign form_id = 'ProductForm-' | append: section.id -%}
+              {%- form 'product', product, id: form_id, data-ajax-cart: '', novalidate: 'novalidate', class: 'pdp__form' -%}
+                <input type="hidden" name="id" value="{{ current.id }}" data-variant-id>
+                <div class="pdp__buy-row">
+                  {%- assign qty_id = 'Qty-' | append: section.id -%}
+                  {%- render 'quantity', id: qty_id, name: 'quantity', value: 1, min: 1, label: product.title -%}
+                  <button type="submit" name="add" class="btn btn--accent pdp__add" data-add-button{% unless current.available %} disabled{% endunless %}>
+                    <span data-add-text>{%- if current.available -%}Add to cart{%- else -%}Sold out{%- endif -%}</span>
+                  </button>
+                </div>
+                <p class="card__error" data-form-error role="alert" hidden></p>
+                {%- if block.settings.show_dynamic_checkout -%}<div class="pdp__dynamic">{{ form | payment_button }}</div>{%- endif -%}
+              {%- endform -%}
+              <p class="pdp__stock" data-stock>
+                {%- if current.available -%}
+                  {%- if current.inventory_management == 'shopify' and current.inventory_quantity > 0 and current.inventory_quantity <= block.settings.low_stock -%}
+                    Only {{ current.inventory_quantity }} left in stock
+                  {%- else -%}
+                    {% render 'icon', name: 'check', class: 'icon--sm' %} In stock
+                  {%- endif -%}
+                {%- else -%}Currently unavailable{%- endif -%}
+              </p>
+            </div>
+          {%- when 'text' -%}
+            <div class="pdp__note rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+          {%- when 'collapsible' -%}
+            {%- liquid
+              assign body = block.settings.content
+              if block.settings.source == 'ingredients'
+                assign body = product.metafields.custom.ingredients_full.value | escape | newline_to_br
+              elsif block.settings.source == 'how_to_use'
+                assign body = product.metafields.custom.how_to_use_text.value | escape | newline_to_br
+              elsif block.settings.source == 'page' and block.settings.page != blank
+                assign body = block.settings.page.content
+              endif
+            -%}
+            {%- if body != blank -%}
+              <details class="accordion__item" {{ block.shopify_attributes }}>
+                <summary>{{ block.settings.heading | escape }} {% render 'icon', name: 'plus' %}</summary>
+                <div class="accordion__content rte">{{ body }}</div>
+              </details>
+            {%- endif -%}
+          {%- when 'share' -%}
+            <div class="pdp__share" {{ block.shopify_attributes }}>
+              <span>Share</span>
+              <a href="https://wa.me/?text={{ product.title | url_encode }}%20{{ request.origin | append: product.url | url_encode }}" target="_blank" rel="noopener" aria-label="Share on WhatsApp">{% render 'icon', name: 'whatsapp', class: 'icon--sm' %}</a>
+              <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.origin | append: product.url | url_encode }}" target="_blank" rel="noopener" aria-label="Share on Facebook">{% render 'icon', name: 'facebook', class: 'icon--sm' %}</a>
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<dialog class="zoom" data-zoom-dialog aria-label="Zoomed product image">
+  <button type="button" class="zoom__close" data-zoom-close aria-label="Close zoom">{% render 'icon', name: 'close' %}</button>
+  <img alt="{{ product.title | escape }}" width="2400" height="2400" data-zoom-img>
+</dialog>
+
+{% schema %}
+{
+  "name": "Product information",
+  "class": "section-main-product",
+  "blocks": [
+    { "type": "@app" },
+    { "type": "title", "name": "Title, subtitle & rating", "limit": 1 },
+    { "type": "summary", "name": "Short summary", "limit": 1, "settings": [{ "type": "paragraph", "content": "Uses metafield custom.short_description, otherwise the first 30 words of the description." }] },
+    { "type": "price", "name": "Price", "limit": 1 },
+    { "type": "variant_picker", "name": "Variant picker", "limit": 1 },
+    { "type": "buy_buttons", "name": "Buy buttons", "limit": 1, "settings": [
+      { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show Buy it now button", "default": true },
+      { "type": "range", "id": "low_stock", "label": "Low stock message threshold", "min": 0, "max": 20, "step": 1, "default": 5, "info": "Uses real inventory. 0 disables the message." }
+    ] },
+    { "type": "text", "name": "Text", "settings": [{ "type": "richtext", "id": "text", "label": "Text", "default": "<p>Questions about this product? <a href=\"/pages/contact\">Ask our team</a>.</p>" }] },
+    { "type": "collapsible", "name": "Collapsible row", "settings": [
+      { "type": "text", "id": "heading", "label": "Heading", "default": "Full ingredient list" },
+      { "type": "select", "id": "source", "label": "Content source", "default": "ingredients", "options": [
+        { "value": "ingredients", "label": "Metafield: custom.ingredients_full" },
+        { "value": "how_to_use", "label": "Metafield: custom.how_to_use_text" },
+        { "value": "page", "label": "A page (e.g. shipping info)" },
+        { "value": "custom", "label": "Text below" }
+      ] },
+      { "type": "page", "id": "page", "label": "Page" },
+      { "type": "richtext", "id": "content", "label": "Text" }
+    ] },
+    { "type": "share", "name": "Share links", "limit": 1 }
+  ]
+}
+{% endschema %}

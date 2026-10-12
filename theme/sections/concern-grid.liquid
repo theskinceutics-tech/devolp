@@ -1,0 +1,57 @@
+{%- assign s = section.settings -%}
+<section class="section {% render 'section-class', style: s.style %} reveal">
+  <div class="container">
+    <div class="section-head">
+      {%- if s.eyebrow != blank -%}<span class="eyebrow">{{ s.eyebrow | escape }}</span>{%- endif -%}
+      <h2>{{ s.heading | escape }}</h2>
+      {%- if s.text != blank -%}<p>{{ s.text | escape }}</p>{%- endif -%}
+    </div>
+    <div class="grid grid--4">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign url = block.settings.link
+          if block.settings.collection != blank
+            assign url = block.settings.collection.url
+          endif
+          if url == blank
+            assign q = block.settings.search_terms | default: block.settings.title | url_param_escape
+            assign url = routes.search_url | append: '?type=product&q=' | append: q
+          endif
+        -%}
+        <a href="{{ url }}" class="concern" {{ block.shopify_attributes }}>
+          <span class="concern__icon">{% render 'icon', name: block.settings.icon %}</span>
+          <span>
+            <span class="concern__title">{{ block.settings.title | escape }}</span>
+            {%- if block.settings.text != blank -%}<span class="concern__text" style="display:block">{{ block.settings.text | escape }}</span>{%- endif -%}
+          </span>
+          <span class="concern__go">Explore {% render 'icon', name: 'arrow', class: 'icon--sm' %}</span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Shop by concern",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop by skin & hair concern" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Find the right formula for what your skin and scalp need today." },
+    { "type": "select", "id": "style", "label": "Background", "default": "surface", "options": [{ "value": "light", "label": "White" }, { "value": "surface", "label": "Light grey" }, { "value": "blue", "label": "Light blue" }] }
+  ],
+  "blocks": [
+    { "type": "concern", "name": "Concern", "limit": 12, "settings": [
+      { "type": "text", "id": "title", "label": "Title", "default": "Acne-prone skin" },
+      { "type": "text", "id": "text", "label": "Short text" },
+      { "type": "select", "id": "icon", "label": "Icon", "default": "target", "options": [
+        { "value": "target", "label": "Target" }, { "value": "sun", "label": "Sun" }, { "value": "eye", "label": "Eye" }, { "value": "sparkle", "label": "Sparkle" },
+        { "value": "drop", "label": "Drop" }, { "value": "hair", "label": "Hair" }, { "value": "leaf", "label": "Leaf" }, { "value": "layers", "label": "Layers" }, { "value": "molecule", "label": "Molecule" }
+      ] },
+      { "type": "collection", "id": "collection", "label": "Concern collection", "info": "Recommended. Otherwise the link or search terms are used." },
+      { "type": "url", "id": "link", "label": "Link" },
+      { "type": "text", "id": "search_terms", "label": "Search terms fallback", "default": "acne" }
+    ] }
+  ],
+  "presets": [{ "name": "Shop by concern", "blocks": [{ "type": "concern" }, { "type": "concern" }, { "type": "concern" }, { "type": "concern" }] }]
+}
+{% endschema %}

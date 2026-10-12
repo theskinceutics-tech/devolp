@@ -1,0 +1,183 @@
+{
+  "sections": {
+    "intro": {
+      "type": "rich-text",
+      "settings": {
+        "eyebrow": "Routine finder",
+        "pill": true,
+        "heading": "Build your routine",
+        "as_h1": true,
+        "text": "<p>Choose a concern to find a personalised Elysium routine.</p>",
+        "align": "center",
+        "compact": true,
+        "style": "light"
+      }
+    },
+    "builder": {
+      "type": "routine-builder",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Start with your main concern",
+        "text": "Each routine uses real Elysium products. Follow the directions on each product page.",
+        "style": "light"
+      },
+      "blocks": {
+        "b1": {
+          "type": "routine",
+          "settings": {
+            "label": "Acne-prone",
+            "title": "Clear, balanced skin",
+            "text": "Cleanse, treat and protect breakout-prone skin.",
+            "search_terms": "acne",
+            "link_label": "See all products"
+          }
+        },
+        "b2": {
+          "type": "routine",
+          "settings": {
+            "label": "Pigmentation",
+            "title": "A more even-looking tone",
+            "text": "Target the look of dark spots and melasma, then protect daily with sunscreen.",
+            "search_terms": "melasma",
+            "link_label": "See all products"
+          }
+        },
+        "b3": {
+          "type": "routine",
+          "settings": {
+            "label": "Under-eye",
+            "title": "Brighter-looking eyes",
+            "text": "Focused care for the delicate under-eye area.",
+            "search_terms": "eye",
+            "link_label": "See all products"
+          }
+        },
+        "b4": {
+          "type": "routine",
+          "settings": {
+            "label": "Visible ageing",
+            "title": "Smoother-looking skin",
+            "text": "Advanced serums for the look of fine lines and texture.",
+            "search_terms": "anti aging",
+            "link_label": "See all products"
+          }
+        },
+        "b5": {
+          "type": "routine",
+          "settings": {
+            "label": "Hair thinning",
+            "title": "Fuller-looking hair",
+            "text": "Scalp-first care for hair that looks thicker and stronger.",
+            "search_terms": "hair",
+            "link_label": "See all products"
+          }
+        },
+        "b6": {
+          "type": "routine",
+          "settings": {
+            "label": "Sun protection",
+            "title": "Daily defence",
+            "text": "Broad-spectrum protection is the final step of every morning routine.",
+            "search_terms": "sun",
+            "link_label": "See all products"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5",
+        "b6"
+      ]
+    },
+    "brand": {
+      "type": "image-with-text",
+      "settings": {
+        "media_side": "left",
+        "ratio": "square",
+        "art": "2",
+        "style": "light",
+        "heading": "Science-led care for skin and hair",
+        "text": "<p>Research and careful formulation are at the core of every Elysium product, so each step of your routine has a clear purpose.</p>",
+        "button_label": "Our science",
+        "button_link": "/pages/science"
+      }
+    },
+    "bestsellers": {
+      "type": "product-carousel",
+      "settings": {
+        "heading": "Shop our best sellers",
+        "text": "Discover our most-loved formulas.",
+        "limit": 8,
+        "per_view": "4",
+        "view_all_label": "Shop all",
+        "style": "light"
+      }
+    },
+    "advice": {
+      "type": "blog-cards",
+      "settings": {
+        "heading": "Learn more about your top concerns",
+        "text": "With the right routine you can address visible signs of ageing, uneven tone, dryness and more.",
+        "button_label": "See more articles",
+        "limit": 6,
+        "layout": "split",
+        "style": "surface"
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "settings": {
+        "heading": "Frequently asked questions",
+        "layout": "stack",
+        "style": "light"
+      },
+      "blocks": {
+        "b1": {
+          "type": "question",
+          "settings": {
+            "question": "Why is a skincare routine important?",
+            "answer": "<p>Using the right products consistently, in the right order, helps each one do its job. A simple routine is easier to stick to than a complicated one.</p>"
+          }
+        },
+        "b2": {
+          "type": "question",
+          "settings": {
+            "question": "What is the correct order to apply products?",
+            "answer": "<p>A common order is cleanse, treat (serums), moisturise, then finish with sunscreen in the morning. Always follow the directions on each product.</p>"
+          }
+        },
+        "b3": {
+          "type": "question",
+          "settings": {
+            "question": "Can I use several active ingredients together?",
+            "answer": "<p>Introduce one new active at a time and patch-test first. If you are unsure whether two products can be combined, <a href=\"/pages/contact\">ask our team</a>.</p>"
+          }
+        },
+        "b4": {
+          "type": "question",
+          "settings": {
+            "question": "Do I need sunscreen if I use exfoliating acids?",
+            "answer": "<p>Yes. Daily broad-spectrum sun protection is recommended for everyone, and especially when using exfoliating or brightening products.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ]
+    }
+  },
+  "order": [
+    "intro",
+    "builder",
+    "brand",
+    "bestsellers",
+    "advice",
+    "faq"
+  ]
+}

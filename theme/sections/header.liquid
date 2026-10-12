@@ -1,0 +1,217 @@
+{%- liquid
+  assign menu = section.settings.menu
+  assign highlights = section.settings.highlight_items | downcase | split: ','
+  assign cart_drawer = false
+  if settings.cart_type == 'drawer'
+    assign cart_drawer = true
+  endif
+-%}
+<div class="header-wrap{% if section.settings.sticky %} header-wrap--sticky{% endif %}">
+<header class="header">
+  <div class="container">
+    <div class="header__top">
+      <div class="header__left">
+        <button type="button" class="header__icon" data-drawer-open="MenuDrawer" aria-controls="MenuDrawer" aria-expanded="false" aria-label="Open menu">{% render 'icon', name: 'menu' %}</button>
+        <a href="{{ routes.search_url }}" class="header__icon header__icon--search-m" data-search-open aria-label="Search">{% render 'icon', name: 'search' %}</a>
+      </div>
+      <a href="{{ routes.root_url }}" class="header__logo" aria-label="{{ shop.name }} home">
+        {%- if settings.logo -%}
+          {%- capture logo_sizes -%}(min-width: 990px) {{ settings.logo_width }}px, {{ settings.logo_width_mobile }}px{%- endcapture -%}
+          {{ settings.logo | image_url: width: 600 | image_tag: widths: '160,240,320,400,600', sizes: logo_sizes, loading: 'eager', alt: shop.name }}
+        {%- else -%}
+          <span class="header__logo-text">{{ shop.name }}</span>
+        {%- endif -%}
+        {%- if section.settings.tagline != blank -%}<span class="header__tagline">{{ section.settings.tagline | escape }}</span>{%- endif -%}
+      </a>
+      <div class="header__right">
+        <nav class="header__utility" aria-label="Utility">
+          {%- for link in section.settings.utility_menu.links -%}
+            <a href="{{ link.url }}">{{ link.title | escape }}</a>
+          {%- endfor -%}
+        </nav>
+        {%- if shop.customer_accounts_enabled -%}
+          <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="header__icon" aria-label="{% if customer %}My account{% else %}Sign in{% endif %}">
+            {% render 'icon', name: 'account' %}
+          </a>
+        {%- endif -%}
+        <a href="{{ routes.cart_url }}" class="header__icon"{% if cart_drawer %} data-drawer-open="CartDrawer" aria-controls="CartDrawer" aria-expanded="false"{% endif %}>
+          {% render 'icon', name: 'cart' %}
+          <span class="visually-hidden">Cart</span>
+          <span class="cart-count" data-cart-count data-count="{{ cart.item_count }}">{{ cart.item_count }}</span>
+        </a>
+      </div>
+    </div>
+    <div class="header__bottom">
+      <nav class="nav" aria-label="Main">
+        <ul class="nav__list">
+          {%- for link in menu.links -%}
+            {%- liquid
+              assign title_key = link.title | downcase | strip
+              assign is_hl = false
+              for h in highlights
+                assign hk = h | strip
+                if hk == title_key
+                  assign is_hl = true
+                endif
+              endfor
+              assign promos = 0
+              for block in section.blocks
+                assign bk = block.settings.menu_item | downcase | strip
+                if bk == title_key
+                  assign promos = promos | plus: 1
+                endif
+              endfor
+            -%}
+            {%- if link.links.size > 0 or promos > 0 -%}
+              {%- liquid
+                assign deep = 0
+                for child in link.links
+                  if child.links.size > 0
+                    assign deep = deep | plus: 1
+                  endif
+                endfor
+                if deep > 0
+                  assign cols = link.links.size | at_most: 5
+                else
+                  assign cols = 1
+                endif
+              -%}
+              <li class="nav__item nav__item--mega">
+                <a href="{{ link.url }}" class="nav__link{% if is_hl %} nav__link--highlight{% endif %}" aria-haspopup="true" aria-expanded="false"{% if link.active %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
+                <div class="mega">
+                  <div class="container mega__inner" style="--cols:{{ cols }}">
+                    {%- if deep > 0 -%}
+                      {%- for child in link.links -%}
+                        <div class="mega__col">
+                          <h3><a href="{{ child.url }}">{{ child.title | escape }}</a></h3>
+                          {%- if child.links.size > 0 -%}
+                            <ul>{%- for g in child.links -%}<li><a href="{{ g.url }}">{{ g.title | escape }}</a></li>{%- endfor -%}</ul>
+                          {%- endif -%}
+                        </div>
+                      {%- endfor -%}
+                    {%- else -%}
+                      <div class="mega__col">
+                        <h3><a href="{{ link.url }}">Shop {{ link.title | escape }}</a></h3>
+                        <ul style="columns:{% if link.links.size > 6 %}2{% else %}1{% endif %};column-gap:48px;display:block">
+                          {%- for child in link.links -%}<li style="margin-bottom:8px"><a href="{{ child.url }}">{{ child.title | escape }}</a></li>{%- endfor -%}
+                        </ul>
+                      </div>
+                    {%- endif -%}
+                    {%- if promos > 0 -%}
+                      <div class="mega__promos">
+                        {%- for block in section.blocks -%}
+                          {%- assign bk = block.settings.menu_item | downcase | strip -%}
+                          {%- if bk == title_key -%}
+                            <a href="{{ block.settings.link | default: link.url }}" class="mega__promo" {{ block.shopify_attributes }}>
+                              {%- render 'media', image: block.settings.image, collection: block.settings.collection, ratio: '4/5', sizes: '220px', variant: forloop.index -%}
+                              <span class="mega__promo-title">{{ block.settings.title | default: block.settings.collection.title | escape }}</span>
+                            </a>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </li>
+            {%- else -%}
+              <li class="nav__item"><a href="{{ link.url }}" class="nav__link{% if is_hl %} nav__link--highlight{% endif %}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title | escape }}</a></li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </nav>
+      {%- if section.settings.show_search -%}
+        <div class="header__search-desktop">
+          <form action="{{ routes.search_url }}" method="get" role="search" class="search-form" {% if settings.predictive_search %}data-predictive{% endif %}>
+            <label for="HeaderSearch" class="visually-hidden">Search</label>
+            <input type="search" id="HeaderSearch" name="q" class="search-form__input" placeholder="Search" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="HeaderSearchResults">
+            <input type="hidden" name="type" value="product,article,page">
+            <button type="submit" class="search-form__btn" aria-label="Submit search">{% render 'icon', name: 'search', class: 'icon--sm' %}</button>
+            <div class="predictive" id="HeaderSearchResults" data-predictive-results hidden></div>
+          </form>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</header>
+</div>
+
+<div class="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search-modal__panel">
+    <div class="search-modal__row">
+      <form action="{{ routes.search_url }}" method="get" role="search" class="search-form" {% if settings.predictive_search %}data-predictive{% endif %}>
+        <label for="ModalSearch" class="visually-hidden">Search</label>
+        <input type="search" id="ModalSearch" name="q" class="search-form__input" placeholder="Search products and advice" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ModalSearchResults">
+        <button type="submit" class="search-form__btn" aria-label="Submit search">{% render 'icon', name: 'search' %}</button>
+        <div class="predictive" id="ModalSearchResults" data-predictive-results hidden></div>
+      </form>
+      <button type="button" class="header__icon" data-search-close aria-label="Close search">{% render 'icon', name: 'close' %}</button>
+    </div>
+  </div>
+</div>
+
+<div id="MenuDrawer" class="drawer drawer--left" aria-hidden="true">
+  <div class="drawer__overlay" data-drawer-close></div>
+  <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
+    <div class="drawer__head">
+      <h2>Menu</h2>
+      <button type="button" class="drawer__close" data-drawer-close aria-label="Close menu">{% render 'icon', name: 'close' %}</button>
+    </div>
+    <div class="drawer__body">
+      <ul class="mobile-nav">
+        {%- for link in menu.links -%}
+          <li>
+            {%- if link.links.size > 0 -%}
+              <details>
+                <summary>{{ link.title | escape }} {% render 'icon', name: 'chevron-down', class: 'icon--sm' %}</summary>
+                <ul class="mobile-nav__sub">
+                  <li><a href="{{ link.url }}" class="mobile-nav__parent">All {{ link.title | escape }}</a></li>
+                  {%- for child in link.links -%}
+                    <li><a href="{{ child.url }}"{% if child.links.size > 0 %} class="mobile-nav__parent"{% endif %}>{{ child.title | escape }}</a></li>
+                    {%- for g in child.links -%}<li style="padding-left:12px"><a href="{{ g.url }}">{{ g.title | escape }}</a></li>{%- endfor -%}
+                  {%- endfor -%}
+                </ul>
+              </details>
+            {%- else -%}
+              <a href="{{ link.url }}">{{ link.title | escape }}</a>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+      <div class="mobile-nav__util">
+        {%- for link in section.settings.utility_menu.links -%}<a href="{{ link.url }}">{{ link.title | escape }}</a>{%- endfor -%}
+        {%- if shop.customer_accounts_enabled -%}
+          <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}">{% render 'icon', name: 'account' %} {% if customer %}My account{% else %}Sign in / Register{% endif %}</a>
+        {%- endif -%}
+        {%- if settings.social_whatsapp != blank -%}<a href="{{ settings.social_whatsapp }}" target="_blank" rel="noopener">{% render 'icon', name: 'whatsapp' %} Chat on WhatsApp</a>{%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "section-header",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Main menu", "default": "main-menu", "info": "Use nested menu items (up to 3 levels) to build mega-menu columns." },
+    { "type": "link_list", "id": "utility_menu", "label": "Utility links (top right)", "info": "For example: Customer care, Track order, Contact." },
+    { "type": "text", "id": "highlight_items", "label": "Highlighted menu items", "info": "Comma-separated titles shown in brand blue, e.g. New, Offers" },
+    { "type": "text", "id": "tagline", "label": "Tagline under logo", "info": "Leave empty unless it is an approved brand line." },
+    { "type": "checkbox", "id": "sticky", "label": "Sticky header", "default": true },
+    { "type": "checkbox", "id": "show_search", "label": "Show search field", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "promo",
+      "name": "Mega-menu image card",
+      "settings": [
+        { "type": "text", "id": "menu_item", "label": "Show under menu item", "info": "Must match the top-level menu title exactly, e.g. Skin Care" },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "collection", "id": "collection", "label": "Collection", "info": "Used for the link and as image fallback." },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ]
+}
+{% endschema %}

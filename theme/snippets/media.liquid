@@ -1,0 +1,39 @@
+{%- comment -%}
+  Media frame that always shows something meaningful.
+  Priority: image -> product featured image -> collection image/first product image -> original artwork.
+  Params: image, product, collection, ratio ('4/5'), contain (bool), sizes, eager, variant, tone, class, alt
+{%- endcomment -%}
+{%- liquid
+  assign img = image
+  assign is_product = false
+  if img == blank and product != blank
+    assign img = product.featured_image
+    assign is_product = true
+  endif
+  if img == blank and collection != blank
+    if collection.image
+      assign img = collection.image
+    else
+      assign img = collection.products.first.featured_image
+      assign is_product = true
+    endif
+  endif
+  assign use_contain = contain
+  if use_contain == nil and is_product
+    assign use_contain = true
+  endif
+  assign cls = 'media'
+  if use_contain
+    assign cls = cls | append: ' media--contain'
+  endif
+  if class
+    assign cls = cls | append: ' ' | append: class
+  endif
+-%}
+<div class="{{ cls }}" style="--ratio:{{ ratio | default: '1/1' }}">
+  {%- if img != blank -%}
+    {%- render 'image', image: img, sizes: sizes, eager: eager, alt: alt -%}
+  {%- else -%}
+    {%- render 'art', variant: variant, tone: tone -%}
+  {%- endif -%}
+</div>

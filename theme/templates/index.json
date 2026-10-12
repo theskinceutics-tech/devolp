@@ -1,0 +1,417 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-banner",
+      "settings": {
+        "heading": "Advanced skincare, backed by science",
+        "text": "Targeted formulas for skin and hair, developed by Elysium Skin Sciences.",
+        "button_label": "Shop now",
+        "button_link": "/collections/all",
+        "button2_label": "Build your routine",
+        "button2_link": "/pages/routine",
+        "height": "medium",
+        "overlay": 35,
+        "text_color": "light",
+        "align": "left",
+        "stack_mobile": true
+      }
+    },
+    "promo": {
+      "type": "promo-split",
+      "settings": {
+        "eyebrow": "Featured",
+        "heading": "Discover our advanced serums",
+        "text": "Concentrated, targeted formulas designed to fit into a simple daily routine.",
+        "button_label": "Shop now",
+        "button_link": "/collections/all"
+      }
+    },
+    "bestsellers": {
+      "type": "product-carousel",
+      "settings": {
+        "heading": "Advanced skincare backed by science",
+        "subheading": "From Elysium Skin Sciences",
+        "text": "Discover targeted formulas for skin and hair \u2014 developed around well-studied actives and modern delivery technologies.",
+        "intro_link_label": "Discover our science",
+        "intro_link": "/pages/science",
+        "limit": 8,
+        "per_view": "4",
+        "view_all_label": "Shop all products",
+        "style": "light"
+      }
+    },
+    "categories": {
+      "type": "category-tiles",
+      "settings": {
+        "heading": "Shop by category",
+        "per_view": "4",
+        "style": "light"
+      }
+    },
+    "concerns": {
+      "type": "concern-grid",
+      "settings": {
+        "heading": "Shop by skin & hair concern",
+        "text": "Find the right formula for what your skin and scalp need today.",
+        "style": "surface"
+      },
+      "blocks": {
+        "b1": {
+          "type": "concern",
+          "settings": {
+            "title": "Acne-prone skin",
+            "text": "Clarifying care for breakout-prone skin.",
+            "icon": "target",
+            "search_terms": "acne"
+          }
+        },
+        "b2": {
+          "type": "concern",
+          "settings": {
+            "title": "Uneven tone & pigmentation",
+            "text": "Formulas that target the look of dark spots and melasma.",
+            "icon": "sun",
+            "search_terms": "melasma"
+          }
+        },
+        "b3": {
+          "type": "concern",
+          "settings": {
+            "title": "Dark circles & puffiness",
+            "text": "Targeted under-eye care.",
+            "icon": "eye",
+            "search_terms": "eye"
+          }
+        },
+        "b4": {
+          "type": "concern",
+          "settings": {
+            "title": "Fine lines & visible ageing",
+            "text": "Advanced serums for smoother-looking skin.",
+            "icon": "sparkle",
+            "search_terms": "anti aging"
+          }
+        },
+        "b5": {
+          "type": "concern",
+          "settings": {
+            "title": "Dry & dehydrated skin",
+            "text": "Hydration for comfortable, supple skin.",
+            "icon": "drop",
+            "search_terms": "hydrating"
+          }
+        },
+        "b6": {
+          "type": "concern",
+          "settings": {
+            "title": "Hair thinning",
+            "text": "Scalp and hair-growth support.",
+            "icon": "hair",
+            "search_terms": "hair growth"
+          }
+        },
+        "b7": {
+          "type": "concern",
+          "settings": {
+            "title": "Scalp care",
+            "text": "Shampoos and treatments for a balanced scalp.",
+            "icon": "leaf",
+            "search_terms": "shampoo"
+          }
+        },
+        "b8": {
+          "type": "concern",
+          "settings": {
+            "title": "Scars & stretch marks",
+            "text": "Care for the look of scars and marks.",
+            "icon": "layers",
+            "search_terms": "scar"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5",
+        "b6",
+        "b7",
+        "b8"
+      ]
+    },
+    "services": {
+      "type": "service-cards",
+      "settings": {
+        "heading": "Get the right routine",
+        "text": "Simple ways to find the Elysium products made for your skin and hair.",
+        "style": "light"
+      },
+      "blocks": {
+        "b1": {
+          "type": "card",
+          "settings": {
+            "title": "Build your routine",
+            "text": "Choose a concern and see a step-by-step Elysium routine.",
+            "button_label": "Start your routine",
+            "link": "/pages/routine",
+            "style": "primary"
+          }
+        },
+        "b2": {
+          "type": "card",
+          "settings": {
+            "title": "Talk to our team",
+            "text": "Questions about a product or how to use it? Send us a message.",
+            "button_label": "Contact us",
+            "link": "/pages/contact",
+            "style": "primary"
+          }
+        },
+        "b3": {
+          "type": "card",
+          "settings": {
+            "title": "Ingredient glossary",
+            "text": "Understand the actives and technologies inside our formulas.",
+            "button_label": "Explore ingredients",
+            "link": "/pages/ingredients",
+            "style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3"
+      ]
+    },
+    "science": {
+      "type": "image-with-text",
+      "settings": {
+        "style": "dark",
+        "bleed": true,
+        "media_side": "right",
+        "ratio": "landscape",
+        "art": "1",
+        "eyebrow": "Our science",
+        "heading": "The science behind Elysium",
+        "text": "<p>Every Elysium formula starts with a clear purpose: targeted actives, considered textures and routines that are simple to follow. Explore the technologies \u2014 from exosomes to PDRN \u2014 behind our products.</p>",
+        "button_label": "Explore our science",
+        "button_link": "/pages/science",
+        "button_style": "outline"
+      }
+    },
+    "spotlight": {
+      "type": "product-spotlight",
+      "settings": {
+        "eyebrow": "Spotlight",
+        "media_side": "left",
+        "style": "light"
+      }
+    },
+    "routine": {
+      "type": "routine-builder",
+      "settings": {
+        "eyebrow": "Build your routine",
+        "heading": "What would you like to focus on?",
+        "text": "Choose a concern to see the Elysium products made for it.",
+        "style": "blue"
+      },
+      "blocks": {
+        "b1": {
+          "type": "routine",
+          "settings": {
+            "label": "Acne-prone",
+            "title": "Clear, balanced skin",
+            "text": "Cleanse, treat and protect breakout-prone skin.",
+            "search_terms": "acne",
+            "link_label": "See all products"
+          }
+        },
+        "b2": {
+          "type": "routine",
+          "settings": {
+            "label": "Pigmentation",
+            "title": "A more even-looking tone",
+            "text": "Target the look of dark spots and melasma, then protect daily with sunscreen.",
+            "search_terms": "melasma",
+            "link_label": "See all products"
+          }
+        },
+        "b3": {
+          "type": "routine",
+          "settings": {
+            "label": "Under-eye",
+            "title": "Brighter-looking eyes",
+            "text": "Focused care for the delicate under-eye area.",
+            "search_terms": "eye",
+            "link_label": "See all products"
+          }
+        },
+        "b4": {
+          "type": "routine",
+          "settings": {
+            "label": "Visible ageing",
+            "title": "Smoother-looking skin",
+            "text": "Advanced serums for the look of fine lines and texture.",
+            "search_terms": "anti aging",
+            "link_label": "See all products"
+          }
+        },
+        "b5": {
+          "type": "routine",
+          "settings": {
+            "label": "Hair thinning",
+            "title": "Fuller-looking hair",
+            "text": "Scalp-first care for hair that looks thicker and stronger.",
+            "search_terms": "hair",
+            "link_label": "See all products"
+          }
+        },
+        "b6": {
+          "type": "routine",
+          "settings": {
+            "label": "Sun protection",
+            "title": "Daily defence",
+            "text": "Broad-spectrum protection is the final step of every morning routine.",
+            "search_terms": "sun",
+            "link_label": "See all products"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5",
+        "b6"
+      ]
+    },
+    "ingredients": {
+      "type": "ingredient-cards",
+      "settings": {
+        "eyebrow": "Ingredients & technology",
+        "heading": "Inside our formulas",
+        "text": "The actives that power Elysium products.",
+        "button_label": "Ingredient glossary",
+        "button_link": "/pages/ingredients",
+        "style": "light",
+        "align": "center"
+      },
+      "blocks": {
+        "b1": {
+          "type": "ingredient",
+          "settings": {
+            "name": "PDRN",
+            "symbol": "PDRN",
+            "kicker": "Technology",
+            "text": "Polydeoxyribonucleotide \u2014 DNA fragments studied in skin science for their role in supporting the skin's natural recovery processes."
+          }
+        },
+        "b2": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Exosomes",
+            "symbol": "EXO",
+            "kicker": "Technology",
+            "text": "Tiny extracellular vesicles used in advanced cosmetic formulas focused on skin renewal and a revitalised look."
+          }
+        },
+        "b3": {
+          "type": "ingredient",
+          "settings": {
+            "name": "NAD+",
+            "symbol": "NAD+",
+            "kicker": "Active",
+            "text": "A coenzyme involved in cellular energy, explored in skincare for its role in keeping skin looking healthy and resilient."
+          }
+        },
+        "b4": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Mandelic acid",
+            "symbol": "AHA",
+            "kicker": "Exfoliant",
+            "text": "A larger-molecule alpha hydroxy acid from bitter almonds, known as a gentler exfoliant for smoother-looking skin."
+          }
+        },
+        "b5": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Glycolic acid",
+            "symbol": "AHA",
+            "kicker": "Exfoliant",
+            "text": "The smallest alpha hydroxy acid, used to exfoliate the surface for a brighter, more even-looking complexion."
+          }
+        },
+        "b6": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Vitamin C",
+            "symbol": "C",
+            "kicker": "Antioxidant",
+            "text": "An antioxidant widely used to help brighten the look of skin and support protection against environmental stressors."
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5",
+        "b6"
+      ]
+    },
+    "regimen": {
+      "type": "product-carousel",
+      "settings": {
+        "heading": "Complete your regimen",
+        "text": "Pair targeted treatments with daily essentials.",
+        "limit": 8,
+        "per_view": "4",
+        "view_all_label": "Shop all",
+        "style": "surface"
+      }
+    },
+    "banner": {
+      "type": "image-banner",
+      "settings": {
+        "heading": "Formulated with purpose",
+        "text": "Clinical-style care developed for everyday routines \u2014 with clear directions and honest ingredient information.",
+        "button_label": "About Elysium",
+        "button_link": "/pages/about",
+        "height": 460,
+        "box": true,
+        "full_width": false
+      }
+    },
+    "advice": {
+      "type": "blog-cards",
+      "settings": {
+        "heading": "Expert advice",
+        "text": "Skincare education, ingredient guides and routine tips from Elysium.",
+        "button_label": "Explore articles",
+        "limit": 6,
+        "layout": "split",
+        "style": "light"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "promo",
+    "bestsellers",
+    "categories",
+    "concerns",
+    "services",
+    "science",
+    "spotlight",
+    "routine",
+    "ingredients",
+    "regimen",
+    "banner",
+    "advice"
+  ]
+}

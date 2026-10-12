@@ -1,0 +1,55 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "per_page": 24,
+        "show_description": true,
+        "show_image": true,
+        "enable_filters": true,
+        "enable_sort": true
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "settings": {
+        "heading": "Frequently asked questions",
+        "layout": "stack",
+        "style": "surface"
+      }
+    },
+    "cta": {
+      "type": "cta-band",
+      "settings": {},
+      "blocks": {
+        "b1": {
+          "type": "cta",
+          "settings": {
+            "title": "Not sure which product to choose?",
+            "text": "See step-by-step routines by concern.",
+            "link_label": "Build your routine",
+            "link": "/pages/routine"
+          }
+        },
+        "b2": {
+          "type": "cta",
+          "settings": {
+            "title": "Learn about our ingredients",
+            "text": "What each active does and where to find it.",
+            "link_label": "Ingredient glossary",
+            "link": "/pages/ingredients"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2"
+      ]
+    }
+  },
+  "order": [
+    "main",
+    "faq",
+    "cta"
+  ]
+}

@@ -1,0 +1,58 @@
+<section class="section">
+  <div class="container">
+    <h1>Your cart</h1>
+    {%- if cart.item_count > 0 -%}
+      <form action="{{ routes.cart_url }}" method="post" data-cart-page class="cart-page">
+        <div class="cart-page__grid">
+          <div>
+            {%- for item in cart.items -%}
+              <div class="cart-item" style="grid-template-columns:110px 1fr">
+                <a href="{{ item.url }}" tabindex="-1" aria-hidden="true">{%- render 'media', image: item.image, ratio: '1/1', contain: true, sizes: '110px' -%}</a>
+                <div>
+                  <div style="display:flex;justify-content:space-between;gap:16px">
+                    <a href="{{ item.url }}" class="cart-item__title">{{ item.product.title | escape }}</a>
+                    <span class="price"><span>{{ item.final_line_price | money }}</span>{%- if item.original_line_price > item.final_line_price -%}<s class="price__compare">{{ item.original_line_price | money }}</s>{%- endif -%}</span>
+                  </div>
+                  {%- unless item.product.has_only_default_variant -%}<div class="cart-item__variant">{{ item.variant.title | escape }}</div>{%- endunless -%}
+                  <div class="cart-item__variant">{{ item.final_price | money }} each</div>
+                  <div class="cart-item__row">
+                    {%- assign qty_id = 'CartQty-' | append: forloop.index -%}
+                    {%- render 'quantity', id: qty_id, name: 'updates[]', value: item.quantity, min: 0, label: item.product.title, line: forloop.index -%}
+                    <a href="{{ item.url_to_remove }}" class="cart-item__remove">Remove<span class="visually-hidden"> {{ item.product.title | escape }}</span></a>
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+            {%- if settings.cart_show_note -%}
+              <div class="field" style="margin-top:20px;max-width:520px"><label for="CartNote">Order note</label><textarea id="CartNote" name="note" class="input" rows="3">{{ cart.note }}</textarea></div>
+            {%- endif -%}
+          </div>
+          <aside class="cart-page__summary">
+            {%- if cart.cart_level_discount_applications.size > 0 -%}
+              <ul class="cart-discounts">{%- for d in cart.cart_level_discount_applications -%}<li>{{ d.title | escape }} (−{{ d.total_allocated_amount | money }})</li>{%- endfor -%}</ul>
+            {%- endif -%}
+            <div class="cart-sub"><span>Subtotal</span><span>{{ cart.total_price | money_with_currency }}</span></div>
+            <p class="cart-note-txt">{%- if cart.taxes_included -%}Taxes included. Shipping calculated at checkout.{%- else -%}Taxes and shipping calculated at checkout.{%- endif -%}</p>
+            <button type="submit" name="checkout" class="btn btn--block">Checkout</button>
+            <noscript><button type="submit" name="update" class="btn btn--outline btn--block" style="margin-top:10px">Update cart</button></noscript>
+            {%- if additional_checkout_buttons -%}<div style="margin-top:12px">{{ content_for_additional_checkout_buttons }}</div>{%- endif -%}
+            {%- if settings.cart_message != blank -%}<p class="cart-note-txt">{{ settings.cart_message | escape }}</p>{%- endif -%}
+          </aside>
+        </div>
+      </form>
+    {%- else -%}
+      <div class="empty-state">
+        <p>Your cart is empty.</p>
+        <a href="{{ routes.all_products_collection_url }}" class="btn">Shop all products</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+<style>
+  .cart-page__grid{display:grid;gap:32px;margin-top:24px}
+  @media (min-width:990px){.cart-page__grid{grid-template-columns:minmax(0,1fr) 380px;gap:56px;align-items:start}}
+  .cart-page__summary{background:var(--c-surface);padding:28px}
+</style>
+{% schema %}
+{ "name": "Cart", "settings": [] }
+{% endschema %}

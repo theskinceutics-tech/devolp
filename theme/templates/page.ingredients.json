@@ -1,0 +1,120 @@
+{
+  "sections": {
+    "hero": {
+      "type": "page-hero",
+      "settings": {
+        "breadcrumbs": true,
+        "eyebrow": "Glossary",
+        "heading": "Ingredient glossary",
+        "text": "The actives and technologies used across Elysium formulas, explained in plain language.",
+        "art": "4"
+      }
+    },
+    "directory": {
+      "type": "ingredient-directory",
+      "settings": {
+        "heading": "A–Z ingredients",
+        "text": "Select an ingredient to learn more and find products that contain it."
+      },
+      "blocks": {
+        "b1": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Ceramides",
+            "text": "Lipids that support the skin barrier."
+          }
+        },
+        "b2": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Exosomes",
+            "text": "Extracellular vesicles used in skin-renewal formulas."
+          }
+        },
+        "b3": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Glycolic acid",
+            "text": "Small-molecule AHA for surface exfoliation."
+          }
+        },
+        "b4": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Hyaluronic acid",
+            "text": "Humectant that helps skin hold moisture."
+          }
+        },
+        "b5": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Mandelic acid",
+            "text": "Gentle, larger-molecule AHA exfoliant."
+          }
+        },
+        "b6": {
+          "type": "ingredient",
+          "settings": {
+            "name": "NAD+",
+            "text": "Coenzyme involved in cellular energy."
+          }
+        },
+        "b7": {
+          "type": "ingredient",
+          "settings": {
+            "name": "PDRN",
+            "text": "Polydeoxyribonucleotide, studied for supporting skin recovery."
+          }
+        },
+        "b8": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Peptides",
+            "text": "Short chains of amino acids used in anti-ageing care."
+          }
+        },
+        "b9": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Tranexamic acid",
+            "text": "Used in formulas targeting the look of uneven tone."
+          }
+        },
+        "b10": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Vitamin C",
+            "text": "Antioxidant for a brighter-looking complexion."
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5",
+        "b6",
+        "b7",
+        "b8",
+        "b9",
+        "b10"
+      ]
+    },
+    "products": {
+      "type": "product-carousel",
+      "settings": {
+        "heading": "Shop best sellers",
+        "limit": 8,
+        "per_view": "4",
+        "view_all_label": "Shop all",
+        "style": "surface"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "directory",
+    "products"
+  ]
+}

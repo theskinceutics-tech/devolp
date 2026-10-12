@@ -1,0 +1,15 @@
+{%- comment -%} Rendered on demand through the Section Rendering API from /search?...&section_id=routine-results {%- endcomment -%}
+<div data-remote-content>
+  {%- if search.performed -%}
+    {%- assign shown = 0 -%}
+    {%- for item in search.results -%}
+      {%- if item.object_type == 'product' and shown < 4 -%}
+        {%- assign shown = shown | plus: 1 -%}
+        {%- render 'product-card', product: item -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+</div>
+{% schema %}
+{ "name": "Routine results", "settings": [] }
+{% endschema %}

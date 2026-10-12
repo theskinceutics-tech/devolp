@@ -1,0 +1,21 @@
+{%- comment -%} Params: label, link, variant ('primary'|'outline'|'accent'), dark (bool), class {%- endcomment -%}
+{%- if label != blank and link != blank -%}
+  {%- liquid
+    assign cls = 'btn'
+    if dark
+      if variant == 'outline'
+        assign cls = 'btn btn--ghost-light'
+      else
+        assign cls = 'btn btn--light'
+      endif
+    else
+      case variant
+        when 'outline'
+          assign cls = 'btn btn--outline'
+        when 'accent'
+          assign cls = 'btn btn--accent'
+      endcase
+    endif
+  -%}
+  <a href="{{ link }}" class="{{ cls }} {{ class }}">{{ label | escape }}</a>
+{%- endif -%}

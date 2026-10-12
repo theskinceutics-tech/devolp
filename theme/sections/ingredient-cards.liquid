@@ -1,0 +1,67 @@
+{%- assign s = section.settings -%}
+<section class="section {% render 'section-class', style: s.style %} reveal">
+  <div class="container">
+    <div class="section-head{% if s.align == 'left' %} section-head--left{% endif %}">
+      {%- if s.eyebrow != blank -%}<span class="eyebrow">{{ s.eyebrow | escape }}</span>{%- endif -%}
+      <h2>{{ s.heading | escape }}</h2>
+      {%- if s.text != blank -%}<p>{{ s.text | escape }}</p>{%- endif -%}
+    </div>
+    <div class="carousel" data-carousel style="--per-view:4;--slide-m:70%">
+      <div class="carousel__track" data-carousel-track tabindex="0" role="region" aria-label="{{ s.heading | escape }}">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign b = block.settings
+            assign url = b.link
+            if url == blank
+              assign q = b.name | url_param_escape
+              assign url = routes.search_url | append: '?q=' | append: q
+            endif
+          -%}
+          <a href="{{ url }}" class="ingredient" {{ block.shopify_attributes }}>
+            {%- if b.image != blank -%}
+              {%- render 'media', image: b.image, ratio: '1/1', sizes: '(min-width: 1100px) 25vw, 70vw' -%}
+            {%- else -%}
+              <div class="media" style="--ratio:1/1">
+                {%- render 'art', variant: forloop.index -%}
+                <span style="position:absolute;inset:auto 0 18px 18px;font-family:var(--f-head);font-size:clamp(28px,3vw,40px);color:var(--c-accent-dark);opacity:.9">{{ b.symbol | default: b.name | escape }}</span>
+              </div>
+            {%- endif -%}
+            {%- if b.kicker != blank -%}<span class="ingredient__kicker">{{ b.kicker | escape }}</span>{%- endif -%}
+            <h3>{{ b.name | escape }}</h3>
+            {%- if b.text != blank -%}<p>{{ b.text | escape }}</p>{%- endif -%}
+            <span class="link-arrow" style="font-size:11.5px">Learn more {% render 'icon', name: 'arrow' %}</span>
+          </a>
+        {%- endfor -%}
+      </div>
+      {%- render 'carousel-controls' -%}
+    </div>
+    {%- if s.button_label != blank -%}
+      <div class="section-foot">{%- render 'button', label: s.button_label, link: s.button_link, variant: 'outline' -%}</div>
+    {%- endif -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Ingredient cards",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Ingredients & technology" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Key ingredients" },
+    { "type": "textarea", "id": "text", "label": "Text" },
+    { "type": "select", "id": "align", "label": "Heading alignment", "default": "center", "options": [{ "value": "center", "label": "Center" }, { "value": "left", "label": "Left" }] },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Ingredient glossary" },
+    { "type": "url", "id": "button_link", "label": "Button link", "default": "/pages/ingredients" },
+    { "type": "select", "id": "style", "label": "Background", "default": "light", "options": [{ "value": "light", "label": "White" }, { "value": "surface", "label": "Light grey" }, { "value": "blue", "label": "Light blue" }] }
+  ],
+  "blocks": [
+    { "type": "ingredient", "name": "Ingredient", "limit": 12, "settings": [
+      { "type": "image_picker", "id": "image", "label": "Image", "info": "Optional. Original artwork is used when empty." },
+      { "type": "text", "id": "symbol", "label": "Artwork label", "info": "Short text on the artwork, e.g. PDRN or NAD+" },
+      { "type": "text", "id": "kicker", "label": "Kicker", "default": "Active ingredient" },
+      { "type": "text", "id": "name", "label": "Name", "default": "Ingredient" },
+      { "type": "textarea", "id": "text", "label": "Short description" },
+      { "type": "url", "id": "link", "label": "Link", "info": "Ingredient page. Falls back to a store search for the ingredient." }
+    ] }
+  ],
+  "presets": [{ "name": "Ingredient cards", "blocks": [{ "type": "ingredient" }, { "type": "ingredient" }, { "type": "ingredient" }, { "type": "ingredient" }] }]
+}
+{% endschema %}

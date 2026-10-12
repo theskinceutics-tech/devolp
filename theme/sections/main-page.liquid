@@ -1,0 +1,16 @@
+{%- if section.settings.show_title -%}
+  {%- render 'breadcrumbs' -%}
+  <div class="container container--narrow" style="padding-top:16px"><h1>{{ page.title | escape }}</h1></div>
+{%- endif -%}
+{%- if page.content != blank -%}
+<section class="section{% if section.settings.show_title %}" style="padding-top:24px{% endif %}">
+  <div class="container container--narrow rte">{{ page.content }}</div>
+</section>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Page content",
+  "settings": [{ "type": "checkbox", "id": "show_title", "label": "Show title and breadcrumbs", "default": true }],
+  "presets": [{ "name": "Page content" }]
+}
+{% endschema %}

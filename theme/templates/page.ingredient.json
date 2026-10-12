@@ -1,0 +1,55 @@
+{
+  "sections": {
+    "hero": {
+      "type": "page-hero",
+      "settings": {
+        "breadcrumbs": true,
+        "eyebrow": "Ingredient",
+        "text": "",
+        "art": "1"
+      }
+    },
+    "content": {
+      "type": "main-page",
+      "settings": {
+        "show_title": false
+      }
+    },
+    "products": {
+      "type": "product-carousel",
+      "settings": {
+        "heading": "Shop best sellers",
+        "text": "",
+        "limit": 8,
+        "per_view": "4",
+        "view_all_label": "Shop all",
+        "style": "surface"
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "settings": {
+        "heading": "Frequently asked questions",
+        "layout": "stack",
+        "style": "light"
+      }
+    },
+    "advice": {
+      "type": "blog-cards",
+      "settings": {
+        "heading": "Related reading",
+        "button_label": "Explore articles",
+        "limit": 6,
+        "layout": "split",
+        "style": "light"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "content",
+    "products",
+    "faq",
+    "advice"
+  ]
+}

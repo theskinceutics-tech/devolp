@@ -1,0 +1,69 @@
+{%- liquid
+  assign s = section.settings
+  assign product = s.product
+  if product == blank
+    assign product = collections.all.products[2] | default: collections.all.products.first
+  endif
+  assign dark = false
+  if s.style == 'dark'
+    assign dark = true
+  endif
+  assign variant = product.selected_or_first_available_variant
+-%}
+{%- if product != blank -%}
+<section class="section {% render 'section-class', style: s.style %} reveal">
+  <div class="container">
+    <div class="split{% if s.media_side == 'right' %} split--media-right{% endif %}">
+      <div class="split__media">
+        {%- if s.image != blank -%}
+          {%- render 'media', image: s.image, ratio: '1/1', sizes: '(min-width: 900px) 50vw, 100vw' -%}
+        {%- else -%}
+          <div class="media media--contain" style="--ratio:1/1;background:{% if dark %}#1a1f24{% else %}var(--grad-light){% endif %}">
+            {%- if product.featured_media -%}{%- render 'image', image: product.featured_media.preview_image, sizes: '(min-width: 900px) 50vw, 100vw', alt: product.title -%}{%- else -%}{%- render 'art', variant: 5 -%}{%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+      <div class="split__content">
+        {%- if s.eyebrow != blank -%}<span class="eyebrow">{{ s.eyebrow | escape }}</span>{%- endif -%}
+        <h2>{{ s.heading | default: product.title | escape }}</h2>
+        {%- assign spot_sub = product.metafields.custom.subtitle.value -%}{%- if spot_sub != blank -%}<p style="font-weight:600;color:inherit">{{ spot_sub | escape }}</p>{%- endif -%}
+        {%- if settings.card_show_rating -%}{%- render 'rating', product: product -%}{%- endif -%}
+        <div class="rte" style="margin-block:14px">
+          {%- if s.text != blank -%}{{ s.text }}{%- else -%}<p>{{ product.description | strip_html | truncatewords: 40 }}</p>{%- endif -%}
+        </div>
+        {%- if product.metafields.custom.benefits.value != blank -%}
+          <ul style="list-style:none;padding:0;margin:0 0 18px;display:grid;gap:8px">
+            {%- for b in product.metafields.custom.benefits.value limit: 4 -%}<li style="display:flex;gap:10px;font-size:14px">{% render 'icon', name: 'check', class: 'icon--sm' %}{{ b | escape }}</li>{%- endfor -%}
+          </ul>
+        {%- endif -%}
+        {%- render 'price', product: product -%}
+        <div class="split__actions">
+          {%- if product.available and product.has_only_default_variant -%}
+            {%- form 'product', product, data-ajax-cart: '' -%}
+              <input type="hidden" name="id" value="{{ variant.id }}">
+              <button type="submit" class="btn{% if dark %} btn--light{% endif %}">Add to cart</button>
+              <p class="card__error" data-form-error hidden></p>
+            {%- endform -%}
+          {%- endif -%}
+          <a href="{{ product.url }}" class="btn {% if dark %}btn--ghost-light{% else %}btn--outline{% endif %}">{% if product.has_only_default_variant %}Learn more{% else %}Choose options{% endif %}<span class="visually-hidden"> — {{ product.title | escape }}</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Product spotlight",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product" },
+    { "type": "image_picker", "id": "image", "label": "Editorial image", "info": "Optional. Uses the product photo when empty." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Spotlight" },
+    { "type": "text", "id": "heading", "label": "Heading", "info": "Defaults to the product title." },
+    { "type": "richtext", "id": "text", "label": "Text", "info": "Defaults to the product description." },
+    { "type": "select", "id": "media_side", "label": "Image position", "default": "left", "options": [{ "value": "left", "label": "Left" }, { "value": "right", "label": "Right" }] },
+    { "type": "select", "id": "style", "label": "Background", "default": "light", "options": [{ "value": "light", "label": "White" }, { "value": "surface", "label": "Light grey" }, { "value": "blue", "label": "Light blue" }, { "value": "dark", "label": "Dark" }] }
+  ],
+  "presets": [{ "name": "Product spotlight" }]
+}
+{% endschema %}

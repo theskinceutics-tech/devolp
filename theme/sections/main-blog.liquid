@@ -1,0 +1,74 @@
+{%- liquid
+  assign s = section.settings
+-%}
+{%- render 'breadcrumbs' -%}
+<section class="page-hero">
+  <div class="container page-hero__inner" style="min-height:0">
+    <div>
+      {%- if s.eyebrow != blank -%}<span class="eyebrow">{{ s.eyebrow | escape }}</span>{%- endif -%}
+      <h1>{{ blog.title | escape }}{% if current_tags %} — {{ current_tags.first | escape }}{% endif %}</h1>
+      {%- if s.text != blank -%}<p>{{ s.text | escape }}</p>{%- endif -%}
+    </div>
+  </div>
+</section>
+{%- if blog.all_tags.size > 0 -%}
+  <nav class="container" aria-label="Article topics" style="padding-top:24px">
+    <div class="tabs__list" style="justify-content:flex-start;margin:0">
+      <a href="{{ blog.url }}" class="tabs__tab" style="display:inline-flex;align-items:center;text-decoration:none"{% unless current_tags %} aria-current="page"{% endunless %}>All</a>
+      {%- for tag in blog.all_tags -%}
+        <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="tabs__tab" style="display:inline-flex;align-items:center;text-decoration:none"{% if current_tags contains tag %} aria-current="page"{% endif %}>{{ tag | escape }}</a>
+      {%- endfor -%}
+    </div>
+  </nav>
+  <style>.tabs__tab[aria-current=page]{background:var(--c-ink);color:#fff;border-color:var(--c-ink)}</style>
+{%- endif -%}
+{%- paginate blog.articles by 12 -%}
+<section class="section">
+  <div class="container">
+    {%- if blog.articles.size > 0 -%}
+      {%- liquid
+        assign show_featured = false
+        if paginate.current_page == 1 and current_tags == blank
+          assign show_featured = true
+        endif
+      -%}
+      {%- if show_featured -%}
+        {%- assign featured = blog.articles.first -%}
+        <a href="{{ featured.url }}" class="split" style="text-decoration:none;margin-bottom:56px">
+          <div class="split__media">{%- render 'media', image: featured.image, ratio: '16/10', sizes: '(min-width: 900px) 50vw, 100vw', eager: true -%}</div>
+          <div class="split__content">
+            <span class="eyebrow">Featured</span>
+            <h2>{{ featured.title | escape }}</h2>
+            <p>{{ featured.excerpt_or_content | strip_html | truncatewords: 40 }}</p>
+            <span class="link-arrow">Read article {% render 'icon', name: 'arrow' %}</span>
+          </div>
+        </a>
+      {%- endif -%}
+      <div class="grid grid--3" style="--grid-gap:40px 24px">
+        {%- for article in blog.articles -%}
+          {%- if show_featured and forloop.first -%}{%- continue -%}{%- endif -%}
+          <a href="{{ article.url }}" class="article-card">
+            {%- render 'media', image: article.image, ratio: '4/3', sizes: '(min-width: 750px) 33vw, 100vw', variant: forloop.index -%}
+            <span class="article-card__tag">{{ article.tags.first | default: blog.title | escape }}</span>
+            <h3>{{ article.title | escape }}</h3>
+            <p>{{ article.excerpt_or_content | strip_html | truncatewords: 22 }}</p>
+            <span class="link-arrow">Read more {% render 'icon', name: 'arrow' %}</span>
+          </a>
+        {%- endfor -%}
+      </div>
+      {%- render 'pagination', paginate: paginate -%}
+    {%- else -%}
+      <div class="empty-state"><p>New articles are coming soon.</p><a href="{{ routes.all_products_collection_url }}" class="btn btn--outline">Shop all products</a></div>
+    {%- endif -%}
+  </div>
+</section>
+{%- endpaginate -%}
+{% schema %}
+{
+  "name": "Blog articles",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Expert advice" },
+    { "type": "textarea", "id": "text", "label": "Intro", "default": "Skincare education, ingredient guides and routine advice from Elysium Skin Sciences." }
+  ]
+}
+{% endschema %}

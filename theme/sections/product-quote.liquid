@@ -1,0 +1,29 @@
+{%- liquid
+  assign quote = product.metafields.custom.expert_quote.value
+  assign name = product.metafields.custom.expert_name.value
+  assign role = product.metafields.custom.expert_title.value
+  assign photo = product.metafields.custom.expert_photo.value
+-%}
+{%- if quote != blank and name != blank -%}
+<section class="section section--dark reveal">
+  <div class="container">
+    <figure class="split" style="margin:0">
+      <div class="split__media" style="max-width:420px">{%- render 'media', image: photo, ratio: '4/5', sizes: '420px', variant: 2, tone: 'dark' -%}</div>
+      <blockquote class="split__content" style="margin:0;max-width:640px">
+        <span class="eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        <p style="font-family:var(--f-head);font-size:clamp(19px,2vw,26px);line-height:1.4;color:#fff">“{{ quote | escape }}”</p>
+        <figcaption style="margin-top:20px"><strong>{{ name | escape }}</strong>{%- if role != blank -%}<br><span style="opacity:.7;font-size:13px">{{ role | escape }}</span>{%- endif -%}</figcaption>
+      </blockquote>
+    </figure>
+  </div>
+</section>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Professional insight",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Professional insight" },
+    { "type": "paragraph", "content": "Only shown when metafields custom.expert_quote and custom.expert_name are filled with an approved, attributable statement. Optional: custom.expert_title, custom.expert_photo." }
+  ]
+}
+{% endschema %}

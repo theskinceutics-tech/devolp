@@ -1,0 +1,76 @@
+{
+  "sections": {
+    "hero": {
+      "type": "page-hero",
+      "settings": {
+        "breadcrumbs": true,
+        "eyebrow": "Customer care",
+        "heading": "Contact us",
+        "text": "Questions about an order, a product or your routine? Our team is here to help.",
+        "art": "2"
+      }
+    },
+    "content": {
+      "type": "main-page",
+      "settings": {
+        "show_title": false
+      }
+    },
+    "form": {
+      "type": "contact-form",
+      "settings": {
+        "heading": "Send us a message"
+      }
+    },
+    "help": {
+      "type": "service-cards",
+      "settings": {
+        "heading": "Other ways we can help",
+        "style": "surface"
+      },
+      "blocks": {
+        "b1": {
+          "type": "card",
+          "settings": {
+            "title": "Build your routine",
+            "text": "Find products by concern.",
+            "button_label": "Start now",
+            "link": "/pages/routine",
+            "style": "link"
+          }
+        },
+        "b2": {
+          "type": "card",
+          "settings": {
+            "title": "Shipping information",
+            "text": "Delivery times and charges.",
+            "button_label": "Read policy",
+            "link": "/policies/shipping-policy",
+            "style": "link"
+          }
+        },
+        "b3": {
+          "type": "card",
+          "settings": {
+            "title": "Returns",
+            "text": "Our refund and return policy.",
+            "button_label": "Read policy",
+            "link": "/policies/refund-policy",
+            "style": "link"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3"
+      ]
+    }
+  },
+  "order": [
+    "hero",
+    "content",
+    "form",
+    "help"
+  ]
+}

@@ -1,0 +1,14 @@
+{%- comment -%}
+  Responsive image. Params: image, sizes, class, eager (bool), alt, widths
+  image_tag outputs width/height so the browser reserves space (no CLS).
+{%- endcomment -%}
+{%- liquid
+  assign w = widths | default: '360,540,720,900,1080,1296,1512,1800,2048'
+  assign s = sizes | default: '100vw'
+  assign a = alt | default: image.alt | escape
+  if eager
+    echo image | image_url: width: 2048 | image_tag: widths: w, sizes: s, loading: 'eager', fetchpriority: 'high', class: class, alt: a
+  else
+    echo image | image_url: width: 2048 | image_tag: widths: w, sizes: s, loading: 'lazy', decoding: 'async', class: class, alt: a
+  endif
+-%}

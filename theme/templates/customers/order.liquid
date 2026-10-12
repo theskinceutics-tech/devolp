@@ -1,0 +1,31 @@
+<section class="section"><div class="container">
+  <p><a href="{{ routes.account_url }}" class="link-arrow">Back to account</a></p>
+  <h1>Order {{ order.name }}</h1>
+  <p class="muted">Placed on {{ order.created_at | date: format: 'date_at_time' }}</p>
+  {%- if order.cancelled -%}<p class="form-message form-message--error">Order cancelled on {{ order.cancelled_at | date: format: 'date' }}. Reason: {{ order.cancel_reason_label }}</p>{%- endif -%}
+  <div class="split" style="align-items:start">
+    <div>
+      {%- for item in order.line_items -%}
+        <div class="cart-item">
+          {%- render 'media', image: item.image, ratio: '1/1', contain: true, sizes: '84px' -%}
+          <div>
+            <a href="{{ item.url }}" class="cart-item__title">{{ item.title | escape }}</a>
+            <div class="cart-item__variant">Qty {{ item.quantity }} · {{ item.final_line_price | money }}</div>
+            {%- if item.fulfillment -%}<div class="cart-item__variant">Fulfilled {{ item.fulfillment.created_at | date: format: 'date' }}{% if item.fulfillment.tracking_url %} · <a href="{{ item.fulfillment.tracking_url }}">Track shipment</a>{% endif %}</div>{%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+    <div style="background:var(--c-surface);padding:24px">
+      <div class="cart-sub" style="font-weight:400"><span>Subtotal</span><span>{{ order.line_items_subtotal_price | money }}</span></div>
+      {%- for d in order.cart_level_discount_applications -%}<div class="cart-sub" style="font-weight:400"><span>{{ d.title | escape }}</span><span>−{{ d.total_allocated_amount | money }}</span></div>{%- endfor -%}
+      {%- for s in order.shipping_methods -%}<div class="cart-sub" style="font-weight:400"><span>Shipping ({{ s.title | escape }})</span><span>{{ s.price | money }}</span></div>{%- endfor -%}
+      {%- for t in order.tax_lines -%}<div class="cart-sub" style="font-weight:400"><span>{{ t.title }} ({{ t.rate_percentage }}%)</span><span>{{ t.price | money }}</span></div>{%- endfor -%}
+      <div class="cart-sub" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--c-line)"><span>Total</span><span>{{ order.total_price | money_with_currency }}</span></div>
+      <h2 class="h4" style="margin-top:24px">Shipping address</h2>
+      {{ order.shipping_address | format_address }}
+      <h2 class="h4" style="margin-top:16px">Billing address</h2>
+      {{ order.billing_address | format_address }}
+    </div>
+  </div>
+</div></section>

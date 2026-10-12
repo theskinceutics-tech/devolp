@@ -1,0 +1,54 @@
+{%- liquid
+  assign s = section.settings
+  assign b = s.blog
+  if b == blank
+    assign b = blogs.news
+  endif
+-%}
+{%- if b.articles_count > 0 -%}
+<section class="section {% render 'section-class', style: s.style %} reveal">
+  <div class="container">
+    <div class="split" style="align-items:start;{% if s.layout == 'stack' %}display:block{% endif %}">
+      <div class="{% if s.layout == 'stack' %}section-head{% else %}split__content{% endif %}"{% if s.layout != 'stack' %} style="max-width:340px"{% endif %}>
+        {%- if s.eyebrow != blank -%}<span class="eyebrow">{{ s.eyebrow | escape }}</span>{%- endif -%}
+        <h2>{{ s.heading | escape }}</h2>
+        {%- if s.text != blank -%}<p>{{ s.text | escape }}</p>{%- endif -%}
+        {%- if s.button_label != blank -%}<div class="split__actions">{%- render 'button', label: s.button_label, link: b.url, variant: 'outline' -%}</div>{%- endif -%}
+      </div>
+      <div class="carousel" data-carousel style="--per-view:{% if s.layout == 'stack' %}4{% else %}3{% endif %};--slide-m:78%;min-width:0">
+        <div class="carousel__track" data-carousel-track tabindex="0" role="region" aria-label="{{ s.heading | escape }}">
+          {%- for article in b.articles limit: s.limit -%}
+            <a href="{{ article.url }}" class="article-card">
+              {%- render 'media', image: article.image, ratio: '4/3', sizes: '(min-width: 1100px) 25vw, 78vw', variant: forloop.index -%}
+              <span class="article-card__tag">{{ article.tags.first | default: b.title | escape }}</span>
+              <h3>{{ article.title | escape }}</h3>
+              <p>{{ article.excerpt_or_content | strip_html | truncatewords: 18 }}</p>
+              <span class="link-arrow">Read more {% render 'icon', name: 'arrow' %}</span>
+            </a>
+          {%- endfor -%}
+        </div>
+        {%- render 'carousel-controls' -%}
+      </div>
+    </div>
+  </div>
+</section>
+{%- elsif request.design_mode -%}
+  <p class="container section text-center muted">Publish blog articles to show them here.</p>
+{%- endif -%}
+<style>@media (min-width:900px){#shopify-section-{{ section.id }} .split{grid-template-columns:{% if s.layout == 'stack' %}1fr{% else %}minmax(0,1fr) minmax(0,3fr){% endif %}}}</style>
+{% schema %}
+{
+  "name": "Expert advice (blog)",
+  "settings": [
+    { "type": "blog", "id": "blog", "label": "Blog", "info": "Hidden automatically when the blog has no articles." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Expert advice" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Skincare education, ingredient guides and routine tips from Elysium." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Explore articles" },
+    { "type": "range", "id": "limit", "label": "Articles", "min": 3, "max": 12, "step": 1, "default": 6 },
+    { "type": "select", "id": "layout", "label": "Layout", "default": "split", "options": [{ "value": "split", "label": "Text left, cards right" }, { "value": "stack", "label": "Heading above cards" }] },
+    { "type": "select", "id": "style", "label": "Background", "default": "light", "options": [{ "value": "light", "label": "White" }, { "value": "surface", "label": "Light grey" }, { "value": "blue", "label": "Light blue" }] }
+  ],
+  "presets": [{ "name": "Expert advice (blog)" }]
+}
+{% endschema %}

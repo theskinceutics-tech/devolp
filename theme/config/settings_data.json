@@ -1,0 +1,30 @@
+{
+  "current": "Default",
+  "presets": {
+    "Default": {
+      "logo_width": 190,
+      "logo_width_mobile": 130,
+      "color_ink": "#111418",
+      "color_ink_soft": "#4b5561",
+      "color_bg": "#ffffff",
+      "color_surface": "#f3f5f8",
+      "color_surface_2": "#e4ecf5",
+      "color_dark": "#0e1114",
+      "color_accent": "#1c5fa8",
+      "color_accent_dark": "#0f3866",
+      "color_line": "#dde3ea",
+      "color_sale": "#a8231c",
+      "type_heading_font": "montserrat_n6",
+      "type_body_font": "montserrat_n4",
+      "type_body_size": 15,
+      "page_width": 1320,
+      "animations_reveal": true,
+      "card_show_secondary_image": true,
+      "card_show_quick_add": true,
+      "card_show_rating": true,
+      "cart_type": "drawer",
+      "cart_show_note": false,
+      "predictive_search": true
+    }
+  }
+}

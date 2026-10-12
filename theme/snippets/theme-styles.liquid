@@ -1,0 +1,42 @@
+{%- comment -%} Design tokens from theme settings. Fonts are self-hosted on Shopify's font CDN with font-display: swap. {%- endcomment -%}
+{%- liquid
+  assign head = settings.type_heading_font
+  assign body = settings.type_body_font
+  assign body_bold = body | font_modify: 'weight', '600'
+  assign body_bolder = body | font_modify: 'weight', '700'
+-%}
+{%- unless head.system? -%}{{ head | font_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: true }}{%- endunless -%}
+{%- unless body.system? or body.family == head.family and body.weight == head.weight -%}{{ body | font_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: true }}{%- endunless -%}
+<style>
+  {{ head | font_face: font_display: 'swap' }}
+  {{ body | font_face: font_display: 'swap' }}
+  {%- if body_bold %}{{ body_bold | font_face: font_display: 'swap' }}{% endif -%}
+  {%- if body_bolder %}{{ body_bolder | font_face: font_display: 'swap' }}{% endif %}
+  :root{
+    --c-ink:{{ settings.color_ink }};
+    --c-ink-soft:{{ settings.color_ink_soft }};
+    --c-bg:{{ settings.color_bg }};
+    --c-surface:{{ settings.color_surface }};
+    --c-surface-2:{{ settings.color_surface_2 }};
+    --c-dark:{{ settings.color_dark }};
+    --c-accent:{{ settings.color_accent }};
+    --c-accent-dark:{{ settings.color_accent_dark }};
+    --c-line:{{ settings.color_line }};
+    --c-sale:{{ settings.color_sale }};
+    --grad-light:linear-gradient(115deg,{{ settings.color_surface }} 0%,{{ settings.color_surface_2 }} 100%);
+    --grad-blue:linear-gradient(120deg,{{ settings.color_accent_dark }} 0%,{{ settings.color_accent }} 100%);
+    --f-head:{{ head.family }},{{ head.fallback_families }};
+    --f-head-w:{{ head.weight }};
+    --f-head-s:{{ head.style }};
+    --f-body:{{ body.family }},{{ body.fallback_families }};
+    --f-body-w:{{ body.weight }};
+    --f-body-s:{{ body.style }};
+    --fs-body:{{ settings.type_body_size }}px;
+    --page-width:{{ settings.page_width }}px;
+    --gutter:clamp(16px,4vw,56px);
+    --space-section:clamp(48px,7vw,96px);
+    --logo-w:{{ settings.logo_width }}px;
+    --logo-w-m:{{ settings.logo_width_mobile }}px;
+  }
+  b,strong{font-weight:{{ body_bold.weight | default: 600 }}}
+</style>

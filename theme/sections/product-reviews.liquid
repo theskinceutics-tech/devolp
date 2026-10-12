@@ -1,0 +1,18 @@
+{%- if section.blocks.size > 0 -%}
+<section class="section reveal" id="Reviews">
+  <div class="container">
+    <div class="section-head"><h2>{{ section.settings.heading | escape }}</h2></div>
+    {%- for block in section.blocks -%}{% render block %}{%- endfor -%}
+  </div>
+</section>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Reviews",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Customer reviews" },
+    { "type": "paragraph", "content": "Add your review app's block here (e.g. Judge.me, Loox, Shopify Product Reviews). Hidden until an app block is added — the theme never generates reviews." }
+  ],
+  "blocks": [{ "type": "@app" }]
+}
+{% endschema %}

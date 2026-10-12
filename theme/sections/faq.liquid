@@ -1,0 +1,67 @@
+{%- liquid
+  assign s = section.settings
+  assign mf = blank
+  case request.page_type
+    when 'product'
+      assign mf = product.metafields.custom.faq.value
+    when 'collection'
+      assign mf = collection.metafields.custom.faq.value
+    when 'page'
+      assign mf = page.metafields.custom.faq.value
+  endcase
+  assign has_items = false
+  if mf != blank or section.blocks.size > 0
+    assign has_items = true
+  endif
+-%}
+{%- if has_items -%}
+<section class="section {% render 'section-class', style: s.style %} reveal">
+  <div class="container{% unless s.layout == 'side' %} container--narrow{% endunless %}">
+    <div{% if s.layout == 'side' %} class="split" style="align-items:start"{% endif %}>
+      <div{% if s.layout == 'side' %} class="split__content"{% else %} class="section-head section-head--left"{% endif %}>
+        {%- if s.layout == 'side' -%}<p aria-hidden="true" style="font-family:var(--f-head);font-size:clamp(64px,9vw,140px);line-height:.9;margin:0 0 16px;letter-spacing:-.02em">FAQ</p>{%- endif -%}
+        <h2{% if s.layout == 'side' %} class="h3"{% endif %}>{{ s.heading | escape }}</h2>
+        {%- if s.text != blank -%}<p>{{ s.text | escape }}</p>{%- endif -%}
+      </div>
+      <div class="accordion">
+        {%- if mf != blank -%}
+          {%- for row in mf -%}
+            {%- assign parts = row | split: '|' -%}
+            {%- if parts.size > 1 -%}
+              <details class="accordion__item">
+                <summary>{{ parts[0] | strip | escape }} {% render 'icon', name: 'plus' %}</summary>
+                <div class="accordion__content"><p>{{ row | remove_first: parts[0] | remove_first: '|' | strip | escape | newline_to_br }}</p></div>
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+        {%- for block in section.blocks -%}
+          <details class="accordion__item" {{ block.shopify_attributes }}>
+            <summary>{{ block.settings.question | escape }} {% render 'icon', name: 'plus' %}</summary>
+            <div class="accordion__content rte">{{ block.settings.answer }}</div>
+          </details>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+{% schema %}
+{
+  "name": "FAQ",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Frequently asked questions" },
+    { "type": "textarea", "id": "text", "label": "Text" },
+    { "type": "select", "id": "layout", "label": "Layout", "default": "stack", "options": [{ "value": "stack", "label": "Stacked" }, { "value": "side", "label": "Large FAQ title on the side" }] },
+    { "type": "select", "id": "style", "label": "Background", "default": "light", "options": [{ "value": "light", "label": "White" }, { "value": "surface", "label": "Light grey" }, { "value": "dark", "label": "Dark" }] },
+    { "type": "paragraph", "content": "On product, collection and page templates, questions from the metafield custom.faq (list of single-line text, format: Question | Answer) are shown first, followed by the blocks below." }
+  ],
+  "blocks": [
+    { "type": "question", "name": "Question", "settings": [
+      { "type": "text", "id": "question", "label": "Question", "default": "Question" },
+      { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Answer.</p>" }
+    ] }
+  ],
+  "presets": [{ "name": "FAQ", "blocks": [{ "type": "question" }] }]
+}
+{% endschema %}

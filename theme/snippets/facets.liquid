@@ -1,0 +1,45 @@
+{%- comment -%} Native Shopify storefront filters. Params: results (collection or search), sort_by, active, terms {%- endcomment -%}
+<div id="FacetsDrawer" class="drawer drawer--left facets" aria-hidden="true">
+  <div class="drawer__overlay" data-drawer-close></div>
+  <div class="drawer__panel facets__panel" role="dialog" aria-modal="true" aria-labelledby="FacetsTitle">
+    <div class="drawer__head facets__head">
+      <h2 id="FacetsTitle">Filter</h2>
+      <button type="button" class="drawer__close" data-drawer-close aria-label="Close filters">{% render 'icon', name: 'close' %}</button>
+    </div>
+    <form class="drawer__body facets__form" data-facets-form>
+      {%- if terms -%}<input type="hidden" name="q" value="{{ terms | escape }}"><input type="hidden" name="type" value="product">{%- endif -%}
+      <input type="hidden" name="sort_by" value="{{ sort_by }}">
+      {%- for f in results.filters -%}
+        <details class="accordion__item facets__group"{% if forloop.index <= 3 or f.active_values.size > 0 %} open{% endif %}>
+          <summary>{{ f.label | escape }}{% if f.active_values.size > 0 %} ({{ f.active_values.size }}){% endif %} {% render 'icon', name: 'plus' %}</summary>
+          <div class="facets__values">
+            {%- case f.type -%}
+              {%- when 'price_range' -%}
+                <div class="facets__price">
+                  <label><span class="visually-hidden">Minimum price</span>
+                    <input class="input" type="number" name="{{ f.min_value.param_name }}" placeholder="0" min="0" max="{{ f.range_max | money_without_currency | remove: ',' }}" step="1" inputmode="numeric"{% if f.min_value.value %} value="{{ f.min_value.value | money_without_currency | remove: ',' }}"{% endif %}>
+                  </label>
+                  <span>–</span>
+                  <label><span class="visually-hidden">Maximum price</span>
+                    <input class="input" type="number" name="{{ f.max_value.param_name }}" placeholder="{{ f.range_max | money_without_currency | remove: ',' }}" min="0" max="{{ f.range_max | money_without_currency | remove: ',' }}" step="1" inputmode="numeric"{% if f.max_value.value %} value="{{ f.max_value.value | money_without_currency | remove: ',' }}"{% endif %}>
+                  </label>
+                </div>
+              {%- when 'boolean' -%}
+                {%- for v in f.values -%}
+                  <label class="checkbox facets__opt"><input type="checkbox" name="{{ v.param_name }}" value="{{ v.value }}"{% if v.active %} checked{% endif %}{% if v.count == 0 and v.active == false %} disabled{% endif %}> {{ v.label | escape }} <span class="muted">({{ v.count }})</span></label>
+                {%- endfor -%}
+              {%- else -%}
+                {%- for v in f.values -%}
+                  <label class="checkbox facets__opt"><input type="checkbox" name="{{ v.param_name }}" value="{{ v.value }}"{% if v.active %} checked{% endif %}{% if v.count == 0 and v.active == false %} disabled{% endif %}> {{ v.label | escape }} <span class="muted">({{ v.count }})</span></label>
+                {%- endfor -%}
+            {%- endcase -%}
+          </div>
+        </details>
+      {%- endfor -%}
+      <div class="facets__actions">
+        <button type="submit" class="btn btn--block">Show results</button>
+        {%- if active > 0 -%}<a href="{{ results.url | default: routes.search_url }}{% if terms %}?q={{ terms | url_encode }}&type=product{% endif %}" class="link-arrow" style="justify-content:center">Clear all</a>{%- endif -%}
+      </div>
+    </form>
+  </div>
+</div>

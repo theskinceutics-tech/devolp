@@ -1,0 +1,63 @@
+{%- comment -%}
+  Product card. Params: product, sizes, eager, show_add (default from settings)
+  Badges come only from real data: tags "badge:Text", compare-at price, availability.
+{%- endcomment -%}
+{%- liquid
+  assign show_quick = show_add | default: settings.card_show_quick_add
+  assign card_sizes = sizes | default: '(min-width: 1100px) 300px, (min-width: 750px) 33vw, 50vw'
+  assign variant = product.selected_or_first_available_variant
+  assign badge = ''
+  for tag in product.tags
+    if tag contains 'badge:'
+      assign badge = tag | remove_first: 'badge:' | strip
+      break
+    endif
+  endfor
+  assign subtitle = product.metafields.custom.subtitle.value
+  assign size = product.metafields.custom.size.value
+-%}
+<article class="card">
+  <a href="{{ product.url }}" class="card__media" tabindex="-1" aria-hidden="true">
+    <div class="card__badges">
+      {%- if product.available == false -%}<span class="badge badge--dark">Sold out</span>
+      {%- elsif product.compare_at_price > product.price -%}<span class="badge badge--sale">Sale</span>{%- endif -%}
+      {%- if badge != '' -%}<span class="badge">{{ badge | escape }}</span>{%- endif -%}
+    </div>
+    <div class="media media--contain">
+      {%- if product.featured_media -%}
+        {%- assign card_alt = product.featured_media.alt | default: product.title -%}
+        {%- render 'image', image: product.featured_media.preview_image, sizes: card_sizes, eager: eager, widths: '240,360,480,600,800', alt: card_alt -%}
+        {%- if settings.card_show_secondary_image and product.media[1] -%}
+          {%- render 'image', image: product.media[1].preview_image, sizes: card_sizes, widths: '240,360,480,600,800', alt: '' -%}
+        {%- endif -%}
+      {%- else -%}
+        {%- render 'art', variant: 2 -%}
+      {%- endif -%}
+    </div>
+    <div class="card__progress" aria-hidden="true"><span></span></div>
+  </a>
+  <div class="card__info">
+    <h3 class="card__title"><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
+    {%- if subtitle != blank -%}<p class="card__subtitle">{{ subtitle | escape }}</p>{%- endif -%}
+    {%- if settings.card_show_rating -%}{%- render 'rating', product: product -%}{%- endif -%}
+    <p class="card__meta">
+      {%- if product.has_only_default_variant -%}{{ size | escape }}{%- else -%}{{ product.variants.size }} options available{%- endif -%}
+    </p>
+    <div class="card__bottom">
+      {%- render 'price', product: product, use_range: true -%}
+      {%- if show_quick -%}
+        {%- if product.available and product.has_only_default_variant -%}
+          {%- form 'product', product, data-ajax-cart: '', novalidate: 'novalidate' -%}
+            <input type="hidden" name="id" value="{{ variant.id }}">
+            <button type="submit" class="btn btn--block btn--small" data-add-label="Add to cart">Add to cart</button>
+            <p class="card__error" data-form-error hidden></p>
+          {%- endform -%}
+        {%- elsif product.available -%}
+          <a href="{{ product.url }}" class="btn btn--outline btn--block btn--small">Choose options</a>
+        {%- else -%}
+          <button type="button" class="btn btn--block btn--small" disabled>Sold out</button>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+</article>

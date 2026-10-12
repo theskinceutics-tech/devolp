@@ -1,0 +1,54 @@
+{%- liquid
+  assign s = section.settings
+  assign am = product.metafields.custom.routine_am.value
+  assign pm = product.metafields.custom.routine_pm.value
+-%}
+{%- capture head -%}<div class="section-head"><h2>{{ s.heading | replace: '[product]', product.title | escape }}</h2></div>{%- endcapture -%}
+{%- if am != blank or pm != blank -%}
+<section class="section {% render 'section-class', style: s.style %} reveal">
+  <div class="container">
+    {{ head }}
+    <div data-tabs>
+      {%- if am != blank and pm != blank -%}
+        <div class="tabs__list"><div class="switch" role="tablist" aria-label="Routine time">
+          <button type="button" class="tabs__tab" role="tab" id="RoutineAmTab" aria-controls="RoutineAm" aria-selected="true">Day</button>
+          <button type="button" class="tabs__tab" role="tab" id="RoutinePmTab" aria-controls="RoutinePm" aria-selected="false" tabindex="-1">Night</button>
+        </div></div>
+      {%- endif -%}
+      {%- if am != blank -%}
+        <div class="tabs__panel" role="tabpanel" id="RoutineAm" aria-labelledby="RoutineAmTab">
+          <div class="grid grid--products">{%- for p in am -%}<div><span class="eyebrow" style="font-size:10.5px">Step {{ forloop.index }}</span>{%- render 'product-card', product: p -%}</div>{%- endfor -%}</div>
+        </div>
+      {%- endif -%}
+      {%- if pm != blank -%}
+        <div class="tabs__panel" role="tabpanel" id="RoutinePm" aria-labelledby="RoutinePmTab"{% if am != blank %} hidden{% endif %}>
+          <div class="grid grid--products">{%- for p in pm -%}<div><span class="eyebrow" style="font-size:10.5px">Step {{ forloop.index }}</span>{%- render 'product-card', product: p -%}</div>{%- endfor -%}</div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+{%- else -%}
+<div data-recommendations data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=4&intent=complementary">
+  {%- if recommendations.performed and recommendations.products_count > 0 -%}
+    <div data-remote-content>
+      <section class="section {% render 'section-class', style: s.style %}">
+        <div class="container">
+          {{ head }}
+          <div class="grid grid--products">{%- for p in recommendations.products -%}{%- render 'product-card', product: p -%}{%- endfor -%}</div>
+        </div>
+      </section>
+    </div>
+  {%- endif -%}
+</div>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Complete your routine",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Complete your routine" },
+    { "type": "select", "id": "style", "label": "Background", "default": "light", "options": [{ "value": "light", "label": "White" }, { "value": "surface", "label": "Light grey" }] },
+    { "type": "paragraph", "content": "Metafields custom.routine_am and custom.routine_pm (list of product references) create Day/Night tabs. Without them, Shopify Search & Discovery complementary products are used. The section hides itself when neither exists." }
+  ]
+}
+{% endschema %}

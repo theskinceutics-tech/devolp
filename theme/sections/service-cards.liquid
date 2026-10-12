@@ -1,0 +1,74 @@
+{%- liquid
+  assign s = section.settings
+  assign dark = false
+  if s.style == 'dark'
+    assign dark = true
+  endif
+  assign count = section.blocks.size
+  assign cols = 'grid--3'
+  if count == 4
+    assign cols = 'grid--4'
+  elsif count == 2
+    assign cols = 'grid--2'
+  endif
+-%}
+<section class="section {% render 'section-class', style: s.style %} reveal">
+  <div class="container">
+    {%- if s.heading != blank -%}
+      <div class="section-head">
+        {%- if s.eyebrow != blank -%}<span class="eyebrow">{{ s.eyebrow | escape }}</span>{%- endif -%}
+        <h2>{{ s.heading | escape }}</h2>
+        {%- if s.text != blank -%}<p>{{ s.text | escape }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+    <div class="grid {{ cols }}" style="--grid-gap:28px 20px">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        <div class="service-card"{% if dark %} style="background:transparent;color:#fff"{% endif %} {{ block.shopify_attributes }}>
+          {%- if b.link != blank -%}<a href="{{ b.link }}" tabindex="-1" aria-hidden="true">{%- endif -%}
+          {%- render 'media', image: b.image, product: b.product, ratio: '4/3', sizes: '(min-width: 990px) 33vw, 100vw', variant: forloop.index, tone: s.style -%}
+          {%- if b.link != blank -%}</a>{%- endif -%}
+          <div class="service-card__body">
+            {%- if b.kicker != blank -%}<span class="eyebrow" style="margin:0">{{ b.kicker | escape }}</span>{%- endif -%}
+            <h3>{{ b.title | escape }}</h3>
+            {%- if b.text != blank -%}<p{% if dark %} style="color:rgba(255,255,255,.75)"{% endif %}>{{ b.text | escape }}</p>{%- endif -%}
+            {%- if b.style == 'link' -%}
+              {%- if b.button_label != blank and b.link != blank -%}<a href="{{ b.link }}" class="link-arrow">{{ b.button_label | escape }} {% render 'icon', name: 'arrow' %}</a>{%- endif -%}
+            {%- else -%}
+              {%- render 'button', label: b.button_label, link: b.link, dark: dark, variant: b.style -%}
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+    {%- if s.footer_label != blank -%}
+      <div class="section-foot">{%- render 'button', label: s.footer_label, link: s.footer_link, variant: 'outline', dark: dark -%}</div>
+    {%- endif -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Service cards",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Find the right routine" },
+    { "type": "textarea", "id": "text", "label": "Text" },
+    { "type": "text", "id": "footer_label", "label": "Bottom button label" },
+    { "type": "url", "id": "footer_link", "label": "Bottom button link" },
+    { "type": "select", "id": "style", "label": "Background", "default": "light", "options": [{ "value": "light", "label": "White" }, { "value": "surface", "label": "Light grey" }, { "value": "blue", "label": "Light blue" }, { "value": "dark", "label": "Dark" }] }
+  ],
+  "blocks": [
+    { "type": "card", "name": "Card", "limit": 4, "settings": [
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "product", "id": "product", "label": "Product image fallback" },
+      { "type": "text", "id": "kicker", "label": "Kicker" },
+      { "type": "text", "id": "title", "label": "Title", "default": "Card title" },
+      { "type": "textarea", "id": "text", "label": "Text" },
+      { "type": "text", "id": "button_label", "label": "Button label", "default": "Learn more" },
+      { "type": "url", "id": "link", "label": "Link" },
+      { "type": "select", "id": "style", "label": "Button style", "default": "primary", "options": [{ "value": "primary", "label": "Solid" }, { "value": "outline", "label": "Outline" }, { "value": "link", "label": "Text link" }] }
+    ] }
+  ],
+  "presets": [{ "name": "Service cards", "blocks": [{ "type": "card" }, { "type": "card" }, { "type": "card" }] }]
+}
+{% endschema %}

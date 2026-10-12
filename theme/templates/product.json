@@ -1,0 +1,221 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {},
+      "blocks": {
+        "b1": {
+          "type": "title",
+          "settings": {}
+        },
+        "b2": {
+          "type": "price",
+          "settings": {}
+        },
+        "b3": {
+          "type": "summary",
+          "settings": {}
+        },
+        "b4": {
+          "type": "variant_picker",
+          "settings": {}
+        },
+        "b5": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "low_stock": 5
+          }
+        },
+        "b6": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Full ingredient list",
+            "source": "ingredients"
+          }
+        },
+        "b7": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "How to use",
+            "source": "how_to_use"
+          }
+        },
+        "b8": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Questions about this product? <a href=\"/pages/contact\">Ask our team</a>.</p>"
+          }
+        },
+        "b9": {
+          "type": "share",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5",
+        "b6",
+        "b7",
+        "b8",
+        "b9"
+      ]
+    },
+    "benefits": {
+      "type": "product-benefits",
+      "settings": {
+        "heading": "[product] benefits",
+        "style": "dark"
+      }
+    },
+    "details": {
+      "type": "product-details",
+      "settings": {
+        "heading": "[product] details",
+        "style": "dark"
+      }
+    },
+    "cta": {
+      "type": "cta-band",
+      "settings": {},
+      "blocks": {
+        "b1": {
+          "type": "cta",
+          "settings": {
+            "title": "Not sure where to start?",
+            "text": "Find a routine by skin or hair concern.",
+            "link_label": "Build your routine",
+            "link": "/pages/routine"
+          }
+        },
+        "b2": {
+          "type": "cta",
+          "settings": {
+            "title": "Questions about this product?",
+            "text": "Our team can help with usage and pairing.",
+            "link_label": "Contact us",
+            "link": "/pages/contact"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2"
+      ]
+    },
+    "science": {
+      "type": "product-science",
+      "settings": {
+        "eyebrow": "[product]",
+        "heading": "The science behind the formula",
+        "style": "light"
+      }
+    },
+    "quote": {
+      "type": "product-quote",
+      "settings": {
+        "eyebrow": "Professional insight"
+      }
+    },
+    "ingredients": {
+      "type": "product-ingredients",
+      "settings": {
+        "heading": "Key ingredients",
+        "style": "surface"
+      }
+    },
+    "howto": {
+      "type": "product-how-to-use",
+      "settings": {
+        "heading": "How to use [product]",
+        "style": "light"
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "settings": {
+        "heading": "Your questions, answered",
+        "layout": "side",
+        "style": "dark"
+      },
+      "blocks": {
+        "b1": {
+          "type": "question",
+          "settings": {
+            "question": "How long does delivery take?",
+            "answer": "<p>Delivery times and charges are shown at checkout and in our <a href=\"/policies/shipping-policy\">shipping policy</a>.</p>"
+          }
+        },
+        "b2": {
+          "type": "question",
+          "settings": {
+            "question": "Can I return a product?",
+            "answer": "<p>Please see our <a href=\"/policies/refund-policy\">refund policy</a> for eligibility and how to request a return.</p>"
+          }
+        },
+        "b3": {
+          "type": "question",
+          "settings": {
+            "question": "Is this product right for me?",
+            "answer": "<p>Read the directions and full ingredient list above. If you have sensitive skin, patch-test first. For personal advice, <a href=\"/pages/contact\">contact our team</a>.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3"
+      ]
+    },
+    "routine": {
+      "type": "complete-routine",
+      "settings": {
+        "heading": "Complete your routine",
+        "style": "light"
+      }
+    },
+    "editorial": {
+      "type": "image-banner",
+      "settings": {
+        "heading": "Made by Elysium Skin Sciences",
+        "text": "Targeted formulas, clear directions and honest ingredient information.",
+        "button_label": "Our science",
+        "button_link": "/pages/science",
+        "height": 420,
+        "box": true,
+        "full_width": true
+      }
+    },
+    "reviews": {
+      "type": "product-reviews",
+      "settings": {
+        "heading": "Customer reviews"
+      }
+    },
+    "related": {
+      "type": "product-recommendations",
+      "settings": {
+        "heading": "You may also like",
+        "style": "surface"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "benefits",
+    "details",
+    "cta",
+    "science",
+    "quote",
+    "ingredients",
+    "howto",
+    "faq",
+    "routine",
+    "editorial",
+    "reviews",
+    "related"
+  ]
+}
