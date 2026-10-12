@@ -80,6 +80,17 @@ Sections that have no photo show original Elysium "molecular" artwork or your pr
 | Collections | Set a collection image in **Products → Collections** |
 | Logo | **Theme settings → Logo** (a light version for the dark header) |
 
-## 6. Editorial copy
+## 6. Homepage banner: image or video
+
+Go to **Customize → Home page → Hero banner → Banner media** and pick **Image** or **Video**. You can switch back and forth at any time.
+
+- **Video (recommended):** upload an MP4 of 10–30 seconds to **Content → Files** (or directly in the setting). It plays muted and on loop, without sound. The theme picks a 1080p file for desktop and a 720p file for phones automatically.
+- **Mobile video (optional):** a portrait 9:16 or 4:5 version for phones.
+- **YouTube / Vimeo link:** used only when no video is uploaded. An uploaded video loads faster.
+- **Desktop / Mobile image:** shown as the cover while the video loads, so the page still opens fast.
+- **Play video on mobile:** turn this off to save customers' mobile data. Phones then show the image only.
+- A **pause / play** button appears in the corner. For visitors who have reduced motion turned on, the video waits until they press play.
+
+## 7. Editorial copy
 
 All default headings and paragraphs are drafted in a neutral, non-medical tone and are editable in **Customize**. Review every line against your approved claims before publishing. This applies especially to the ingredient descriptions on the home, science and glossary pages: delete any ingredient that is not in an Elysium product.

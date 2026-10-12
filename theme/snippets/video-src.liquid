@@ -1,0 +1,25 @@
+{%- comment -%}
+  Echoes the best MP4 URL from a Shopify-hosted video whose short side is <= max (e.g. 1080 desktop, 720 mobile).
+  Falls back to the first MP4 source. Params: video, max
+{%- endcomment -%}
+{%- liquid
+  assign best = 0
+  assign out = ''
+  assign first_mp4 = ''
+  for src in video.sources
+    if src.mime_type == 'video/mp4'
+      if first_mp4 == ''
+        assign first_mp4 = src.url
+      endif
+      assign short = src.width | at_most: src.height
+      if short <= max and short > best
+        assign best = short
+        assign out = src.url
+      endif
+    endif
+  endfor
+  if out == ''
+    assign out = first_mp4
+  endif
+  echo out
+-%}

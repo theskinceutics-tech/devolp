@@ -354,9 +354,80 @@
     els.filter((el) => !el.classList.contains('is-visible')).forEach((el) => io.observe(el));
   }
 
-  /* Theme editor support */
-  document.addEventListener('shopify:section:load', (e) => { window.initCarousels(e.target); $$('.reveal', e.target).forEach((el) => el.classList.add('is-visible')); });
+  /* Hero background video: the cover image paints first (fast LCP), the video starts after page load. */
+  function initHero(scope) {
+    $$('[data-hero]', scope).forEach((hero) => {
+      if (hero.dataset.heroReady) return;
+      hero.dataset.heroReady = '1';
+      const video = $('[data-hero-video]', hero);
+      const embed = $('[data-hero-embed]', hero);
+      const media = video || embed;
+      const btn = $('[data-hero-toggle]', hero);
+      if (!media) return;
+      const mobile = window.matchMedia('(max-width: 749px)').matches;
+      if (mobile && media.hasAttribute('data-no-mobile')) return;
+      let playing = false;
+      const setState = (on) => {
+        playing = on;
+        hero.classList.toggle('is-playing', on);
+        hero.classList.toggle('is-paused', !on);
+        if (btn) { btn.hidden = false; btn.setAttribute('aria-label', on ? 'Pause background video' : 'Play background video'); }
+      };
+      const sizeEmbed = () => {
+        const f = $('iframe', embed); if (!f) return;
+        const w = embed.clientWidth; const h = embed.clientHeight;
+        if (w / h > 16 / 9) { f.style.width = w + 'px'; f.style.height = Math.ceil(w * 9 / 16) + 'px'; }
+        else { f.style.height = h + 'px'; f.style.width = Math.ceil(h * 16 / 9) + 'px'; }
+      };
+      const embedCommand = (cmd) => {
+        const f = $('iframe', embed); if (!f) return;
+        const msg = embed.dataset.provider === 'vimeo' ? { method: cmd } : { event: 'command', func: cmd === 'play' ? 'playVideo' : 'pauseVideo', args: [] };
+        f.contentWindow.postMessage(JSON.stringify(msg), '*');
+      };
+      const play = () => {
+        if (video) {
+          if (!video.src) { video.src = (mobile && video.dataset.srcMobile) || video.dataset.src; }
+          const p = video.play();
+          if (p && p.then) p.then(() => setState(true)).catch(() => setState(false));
+        } else if (embed) {
+          if (!$('iframe', embed)) {
+            const f = document.createElement('iframe');
+            f.src = embed.dataset.heroEmbed;
+            f.title = 'Background video';
+            f.tabIndex = -1;
+            f.allow = 'autoplay; encrypted-media; picture-in-picture';
+            f.addEventListener('load', () => setTimeout(() => setState(true), 600), { once: true });
+            embed.appendChild(f);
+            sizeEmbed();
+            if ('ResizeObserver' in window) new ResizeObserver(sizeEmbed).observe(embed);
+          } else { embedCommand('play'); setState(true); }
+        }
+      };
+      const pause = () => {
+        if (video) video.pause(); else embedCommand('pause');
+        setState(false);
+      };
+      if (btn) btn.addEventListener('click', () => { if (playing) { hero.dataset.userPaused = '1'; pause(); } else { delete hero.dataset.userPaused; play(); } });
+      if (video) {
+        video.addEventListener('playing', () => setState(true));
+        // Pause off-screen to save CPU and battery; resume when visible again unless the visitor paused it.
+        if ('IntersectionObserver' in window) {
+          new IntersectionObserver((entries) => entries.forEach((en) => {
+            if (!video.src || hero.dataset.userPaused) return;
+            if (en.isIntersecting) video.play().catch(() => {}); else video.pause();
+          })).observe(hero);
+        }
+      }
+      if (reduceMotion) { setState(false); return; }
+      const start = () => ('requestIdleCallback' in window ? window.requestIdleCallback(play, { timeout: 2500 }) : setTimeout(play, 300));
+      if (document.readyState === 'complete') start(); else window.addEventListener('load', start, { once: true });
+    });
+  }
 
+  /* Theme editor support */
+  document.addEventListener('shopify:section:load', (e) => { initHero(e.target); window.initCarousels(e.target); $$('.reveal', e.target).forEach((el) => el.classList.add('is-visible')); });
+
+  initHero(document);
   window.initCarousels();
   initRemote();
   initReveal();

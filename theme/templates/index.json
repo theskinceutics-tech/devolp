@@ -3,6 +3,7 @@
     "hero": {
       "type": "hero-banner",
       "settings": {
+        "media_type": "image",
         "heading": "Advanced skincare, backed by science",
         "text": "Targeted formulas for skin and hair, developed by Elysium Skin Sciences.",
         "button_label": "Shop now",
@@ -13,7 +14,9 @@
         "overlay": 35,
         "text_color": "light",
         "align": "left",
-        "stack_mobile": true
+        "stack_mobile": true,
+        "video_mobile_enabled": true,
+        "show_pause": true
       }
     },
     "promo": {
@@ -31,7 +34,7 @@
       "settings": {
         "heading": "Advanced skincare backed by science",
         "subheading": "From Elysium Skin Sciences",
-        "text": "Discover targeted formulas for skin and hair \u2014 developed around well-studied actives and modern delivery technologies.",
+        "text": "Discover targeted formulas for skin and hair — developed around well-studied actives and modern delivery technologies.",
         "intro_link_label": "Discover our science",
         "intro_link": "/pages/science",
         "limit": 8,
@@ -195,7 +198,7 @@
         "art": "1",
         "eyebrow": "Our science",
         "heading": "The science behind Elysium",
-        "text": "<p>Every Elysium formula starts with a clear purpose: targeted actives, considered textures and routines that are simple to follow. Explore the technologies \u2014 from exosomes to PDRN \u2014 behind our products.</p>",
+        "text": "<p>Every Elysium formula starts with a clear purpose: targeted actives, considered textures and routines that are simple to follow. Explore the technologies — from exosomes to PDRN — behind our products.</p>",
         "button_label": "Explore our science",
         "button_link": "/pages/science",
         "button_style": "outline"
@@ -306,7 +309,7 @@
             "name": "PDRN",
             "symbol": "PDRN",
             "kicker": "Technology",
-            "text": "Polydeoxyribonucleotide \u2014 DNA fragments studied in skin science for their role in supporting the skin's natural recovery processes."
+            "text": "Polydeoxyribonucleotide — DNA fragments studied in skin science for their role in supporting the skin's natural recovery processes."
           }
         },
         "b2": {
@@ -379,7 +382,7 @@
       "type": "image-banner",
       "settings": {
         "heading": "Formulated with purpose",
-        "text": "Clinical-style care developed for everyday routines \u2014 with clear directions and honest ingredient information.",
+        "text": "Clinical-style care developed for everyday routines — with clear directions and honest ingredient information.",
         "button_label": "About Elysium",
         "button_link": "/pages/about",
         "height": 460,

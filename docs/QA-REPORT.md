@@ -1,6 +1,6 @@
 # Elysium Clinical — build, QA and performance report
 
-Date: 12 October 2026 · Theme version 1.0.1
+Date: 12 October 2026 · Theme version 1.0.2
 
 ## 1. What could and could not be inspected
 
@@ -44,6 +44,21 @@ Not built, deliberately: a professional-locator map, a virtual consultation book
 - Motion: buttons 180ms; mega-menu 220ms; drawers 280ms; carousel smooth scroll; scroll reveal 500ms fade/translate; all switched off under `prefers-reduced-motion`. Opacity and transform only, so there is no layout animation.
 
 ## 4. Automated checks run
+
+### 4.0a Added in 1.0.2: video in the homepage hero
+- **Image / Video** switch on the Hero banner. Supports a Shopify-hosted video (separate mobile video optional) or a YouTube / Vimeo link, a mobile on/off switch and a pause / play button.
+- Performance: the cover image is the eager, `fetchpriority=high` element. The video has `preload="none"` and starts only after the page `load` event, during idle time. It pauses when scrolled off-screen and does not autoplay under `prefers-reduced-motion`.
+- Fixed in the same release: buttons on a dark image or video were black, and are now white. In the mobile stacked layout they stay dark.
+- Browser tests (Chromium, real video file): **18/18 passed**. Covered:
+  - The image fills the banner.
+  - No video is downloaded during HTML parse.
+  - The video autoplays muted after load and fades in.
+  - Pause and play work by mouse and keyboard.
+  - Reduced-motion visitors are offered a play button instead of autoplay.
+  - On mobile the video plays without overflow; with the mobile switch off, phones get the image only.
+  - The YouTube iframe is injected muted and looping, and is sized to cover the banner.
+  - No JavaScript errors.
+- Lighthouse on the video hero (local preview): mobile 100 (LCP 1.4 s, CLS 0, TBT 10 ms), desktop 100.
 
 ### 4.0 Fixes in 1.0.1 (reported after the first upload)
 - **"Section does not exist" errors.** Shopify rejected `trust-bar`, `cta-band` and `ingredient-cards` at upload, because their `url` settings had defaults other than `/collections` or `/collections/all` (Shopify allows only those two). Every template that uses these sections then showed a missing-section error. The defaults have been removed.

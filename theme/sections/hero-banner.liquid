@@ -5,8 +5,10 @@
     assign eager = true
   endif
   assign dark_text = false
+  assign on_dark = true
   if s.text_color == 'dark'
     assign dark_text = true
+    assign on_dark = false
   endif
   assign product = s.product
   if product == blank
@@ -23,21 +25,79 @@
       assign h = '620px'
       assign hm = '520px'
   endcase
+  assign use_video = false
+  if s.media_type == 'video'
+    if s.video != blank or s.video_url != blank
+      assign use_video = true
+    endif
+  endif
+  assign poster = s.image
+  if poster == blank and s.video != blank
+    assign poster = s.video.preview_image
+  endif
+  assign poster_mobile = s.image_mobile
+  if poster_mobile == blank and s.video_mobile != blank
+    assign poster_mobile = s.video_mobile.preview_image
+  endif
+  assign has_media = false
+  if poster != blank or use_video
+    assign has_media = true
+  endif
+  assign src_desktop = ''
+  assign src_mobile = ''
+  assign embed = ''
+  if use_video
+    if s.video != blank
+      capture src_desktop
+        render 'video-src', video: s.video, max: 1080
+      endcapture
+      if s.video_mobile != blank
+        capture src_mobile
+          render 'video-src', video: s.video_mobile, max: 720
+        endcapture
+      else
+        capture src_mobile
+          render 'video-src', video: s.video, max: 720
+        endcapture
+      endif
+      assign src_desktop = src_desktop | strip
+      assign src_mobile = src_mobile | strip
+    elsif s.video_url.type == 'youtube'
+      assign embed = 'https://www.youtube-nocookie.com/embed/' | append: s.video_url.id | append: '?autoplay=1&mute=1&loop=1&controls=0&playsinline=1&rel=0&modestbranding=1&enablejsapi=1&playlist=' | append: s.video_url.id
+    elsif s.video_url.type == 'vimeo'
+      assign embed = 'https://player.vimeo.com/video/' | append: s.video_url.id | append: '?background=1&autoplay=1&loop=1&muted=1&dnt=1'
+    endif
+  endif
   assign tag = 'h2'
   if section.index == 1
     assign tag = 'h1'
   endif
 -%}
-{%- if s.image != blank -%}
-<section class="hero{% if dark_text %} hero--light{% endif %}{% if s.stack_mobile %} hero--stack-mobile{% endif %}" style="--hero-h:{{ h }};--hero-h-m:{{ hm }};--overlay:{{ s.overlay | divided_by: 100.0 }};--hero-fg:{% if dark_text %}var(--c-ink){% else %}#fff{% endif %};--focal:{{ s.image.presentation.focal_point | default: 'center' }}">
+{%- if has_media -%}
+<section class="hero{% if dark_text %} hero--light{% endif %}{% if s.stack_mobile %} hero--stack-mobile{% endif %}" data-hero style="--hero-h:{{ h }};--hero-h-m:{{ hm }};--overlay:{{ s.overlay | divided_by: 100.0 }};--hero-fg:{% if dark_text %}var(--c-ink){% else %}#fff{% endif %};--focal:{{ poster.presentation.focal_point | default: 'center' }}">
   <div class="hero__media">
-    <picture>
-      {%- if s.image_mobile != blank -%}
-        <source media="(max-width: 749px)" srcset="{{ s.image_mobile | image_url: width: 600 }} 600w, {{ s.image_mobile | image_url: width: 900 }} 900w, {{ s.image_mobile | image_url: width: 1200 }} 1200w" sizes="100vw" width="{{ s.image_mobile.width }}" height="{{ s.image_mobile.height }}">
-      {%- endif -%}
-      {%- assign hero_alt = s.image.alt | default: s.heading -%}
-      {%- render 'image', image: s.image, sizes: '100vw', eager: eager, widths: '750,1100,1500,1920,2400', alt: hero_alt -%}
-    </picture>
+    {%- if poster != blank -%}
+      <picture>
+        {%- if poster_mobile != blank -%}
+          <source media="(max-width: 749px)" srcset="{{ poster_mobile | image_url: width: 600 }} 600w, {{ poster_mobile | image_url: width: 900 }} 900w, {{ poster_mobile | image_url: width: 1200 }} 1200w" sizes="100vw" width="{{ poster_mobile.width }}" height="{{ poster_mobile.height }}">
+        {%- endif -%}
+        {%- assign hero_alt = s.image.alt | default: s.heading -%}
+        {%- render 'image', image: poster, sizes: '100vw', eager: eager, widths: '750,1100,1500,1920,2400', alt: hero_alt -%}
+      </picture>
+    {%- else -%}
+      {%- render 'art', variant: 2, tone: 'dark' -%}
+    {%- endif -%}
+    {%- if src_desktop != blank -%}
+      <video class="hero__video" data-hero-video muted loop playsinline disablepictureinpicture preload="none" aria-hidden="true" tabindex="-1" data-src="{{ src_desktop }}" data-src-mobile="{{ src_mobile }}"{% unless s.video_mobile_enabled %} data-no-mobile{% endunless %}></video>
+    {%- elsif embed != blank -%}
+      <div class="hero__embed" data-hero-embed="{{ embed }}" data-provider="{{ s.video_url.type }}" aria-hidden="true"{% unless s.video_mobile_enabled %} data-no-mobile{% endunless %}></div>
+    {%- endif -%}
+    {%- if use_video and s.show_pause -%}
+      <button type="button" class="hero__toggle" data-hero-toggle aria-label="Pause background video" hidden>
+        <span class="hero__toggle-pause">{% render 'icon', name: 'pause', class: 'icon--sm' %}</span>
+        <span class="hero__toggle-play">{% render 'icon', name: 'play', class: 'icon--sm' %}</span>
+      </button>
+    {%- endif -%}
   </div>
   <div class="container hero__inner" style="justify-content:{% if s.align == 'center' %}center;text-align:center{% else %}flex-start{% endif %}">
     <div class="hero__content">
@@ -45,13 +105,12 @@
       <{{ tag }}>{{ s.heading | escape }}</{{ tag }}>
       {%- if s.text != blank -%}<p>{{ s.text | escape }}</p>{%- endif -%}
       <div class="hero__actions"{% if s.align == 'center' %} style="justify-content:center"{% endif %}>
-        {%- render 'button', label: s.button_label, link: s.button_link, dark: dark_text, variant: 'primary' -%}
-        {%- render 'button', label: s.button2_label, link: s.button2_link, dark: dark_text, variant: 'outline' -%}
+        {%- render 'button', label: s.button_label, link: s.button_link, dark: on_dark, variant: 'primary' -%}
+        {%- render 'button', label: s.button2_label, link: s.button2_link, dark: on_dark, variant: 'outline' -%}
       </div>
     </div>
   </div>
 </section>
-{%- if dark_text -%}<style>#shopify-section-{{ section.id }} .hero .btn--light{--btn-bg:var(--c-ink);--btn-fg:#fff;--btn-bd:var(--c-ink)}</style>{%- endif -%}
 {%- else -%}
 <section class="hero hero--product" style="--hero-bg:var(--grad-blue);--hero-h:{{ h }};--hero-h-m:{{ hm }}">
   <div class="container hero__inner">
@@ -78,9 +137,18 @@
 {
   "name": "Hero banner",
   "settings": [
-    { "type": "image_picker", "id": "image", "label": "Desktop image", "info": "1920 × 700–900px. Without an image, the hero shows the selected product on a brand-blue gradient." },
+    { "type": "select", "id": "media_type", "label": "Banner media", "default": "image", "options": [{ "value": "image", "label": "Image" }, { "value": "video", "label": "Video" }], "info": "Switch any time. With Video selected, the image below is used as the cover while the video loads." },
+    { "type": "header", "content": "Image" },
+    { "type": "image_picker", "id": "image", "label": "Desktop image", "info": "1920 × 700–900px. Without an image or video, the hero shows the selected product on a brand-blue gradient." },
     { "type": "image_picker", "id": "image_mobile", "label": "Mobile image", "info": "900 × 1100–1300px, cropped for phones." },
-    { "type": "product", "id": "product", "label": "Product (used when no image)" },
+    { "type": "product", "id": "product", "label": "Product (used when no image or video)" },
+    { "type": "header", "content": "Video" },
+    { "type": "video", "id": "video", "label": "Video", "info": "Recommended: upload an MP4 (10–30 seconds) to Shopify. It plays muted and on loop, without sound." },
+    { "type": "video", "id": "video_mobile", "label": "Mobile video (optional)", "info": "A portrait 9:16 or 4:5 version for phones." },
+    { "type": "video_url", "id": "video_url", "label": "Or YouTube / Vimeo link", "accept": ["youtube", "vimeo"], "info": "Used only when no video is uploaded. Uploaded videos load faster." },
+    { "type": "checkbox", "id": "video_mobile_enabled", "label": "Play video on mobile", "default": true, "info": "Turn off to save mobile data: phones then show the mobile or desktop image." },
+    { "type": "checkbox", "id": "show_pause", "label": "Show pause / play button", "default": true },
+    { "type": "header", "content": "Content" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Advanced skincare, backed by science" },
     { "type": "textarea", "id": "text", "label": "Text", "default": "Targeted formulas for skin and hair, developed by Elysium Skin Sciences." },
@@ -88,11 +156,12 @@
     { "type": "url", "id": "button_link", "label": "Button link", "default": "/collections/all" },
     { "type": "text", "id": "button2_label", "label": "Second button label" },
     { "type": "url", "id": "button2_link", "label": "Second button link" },
-    { "type": "select", "id": "text_color", "label": "Text color on image", "default": "light", "options": [{ "value": "light", "label": "White" }, { "value": "dark", "label": "Dark" }] },
+    { "type": "header", "content": "Layout" },
+    { "type": "select", "id": "text_color", "label": "Text color on image or video", "default": "light", "options": [{ "value": "light", "label": "White" }, { "value": "dark", "label": "Dark" }] },
     { "type": "select", "id": "align", "label": "Content alignment", "default": "left", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }] },
     { "type": "select", "id": "height", "label": "Height", "default": "medium", "options": [{ "value": "small", "label": "Small" }, { "value": "medium", "label": "Medium" }, { "value": "large", "label": "Large" }] },
-    { "type": "range", "id": "overlay", "label": "Image overlay strength", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 35 },
-    { "type": "checkbox", "id": "stack_mobile", "label": "Show text below image on mobile", "default": true }
+    { "type": "range", "id": "overlay", "label": "Overlay strength", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 35 },
+    { "type": "checkbox", "id": "stack_mobile", "label": "Show text below the image or video on mobile", "default": true }
   ],
   "presets": [{ "name": "Hero banner" }]
 }
